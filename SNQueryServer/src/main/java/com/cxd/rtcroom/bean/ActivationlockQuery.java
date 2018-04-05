@@ -9,7 +9,7 @@ public class ActivationlockQuery implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long seqId;
-
+    //这是注释
     private String sn;
 
     private String imei;
