@@ -13,6 +13,7 @@ public class ActivationlockQuery implements Serializable {
     private String sn;
 
     private String imei;
+    //
 
     private String url;
 
