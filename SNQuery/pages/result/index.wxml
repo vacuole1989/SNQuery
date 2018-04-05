@@ -1,0 +1,224 @@
+<view class="title-txt red">为了保护隐私，数据48小时后清除！</view>
+<button type='primary' class='backbtn' bindtap='btnToIndex'>返回小程序</button>
+<view class="result" wx:if="{{hasResult&&itype=='appraisal'}}">
+  <view class="result-title">查询结果</view>
+  <view class="result-text" wx:if="{{isImei}}">
+    <text class="left-text">IMEI</text>
+    <text class="right-text">{{(undefined==resData.imei||null==resData.imei||''==resData.imei)?resData.sn:resData.imei}}</text>
+  </view>
+  <view class="result-text" wx:if="{{!isImei}}">
+    <text class="left-text">序列号</text>
+    <text class="right-text">{{resData.sn}}</text>
+  </view>
+  <view class="result-text">
+    <text class="left-text">设备名称</text>
+    <text class="right-text">{{resData.model}}</text>
+  </view>
+  <view class="result-text">
+    <text class="left-text">颜色容量</text>
+    <text class="right-text">{{resData.color}} {{resData.storage}}</text>
+  </view>
+  <view class="result-text">
+    <text class="left-text">是否激活</text>
+    <text class="right-text">{{''==resData.purchase.date?'否':'是'}}</text>
+  </view>
+  <view class="result-text">
+    <text class="left-text">激活日期</text>
+    <text class="right-text">{{resData.purchase.date}}</text>
+  </view>
+  <view class="result-text">
+    <text class="left-text">技术支持</text>
+    <text class="right-text">{{resData.support=='expired'?'已过期':resData.support}}</text>
+  </view>
+  <view class="result-text">
+    <text class="left-text">保修状态</text>
+    <text class="right-text">剩余{{resData.daysleft}}天</text>
+  </view>
+  <view class="result-text">
+    <text class="left-text">是否延保</text>
+    <text class="right-text">{{resData.applecare?'是':'否'}}</text>
+  </view>
+  <view class="result-text">
+    <text class="left-text">是否官换机</text>
+    <text class="right-text">{{resData.status=='refurbished'?'是':'否'}}</text>
+  </view>
+  <view class="result-text">
+    <text class="left-text">是否官翻机</text>
+    <text class="right-text">{{resData.status=='repaired'?'是':'否'}}</text>
+  </view>
+  <view class="result-text">
+    <text class="left-text">产地</text>
+    <text class="right-text">{{resData.manufacture.factory}}</text>
+  </view>
+</view>
+
+
+<view class="result" wx:if="{{hasResult&&itype=='cn'}}">
+  <view class="result-title">查询结果</view>
+
+  <view class="result-text" wx:if="{{isImei}}">
+    <text class="left-text">IMEI</text>
+    <text class="right-text">{{(undefined==resData.imei||null==resData.imei||''==resData.imei)?resData.sn:resData.imei}}</text>
+  </view>
+  <view class="result-text" wx:if="{{!isImei}}">
+    <text class="left-text">序列号</text>
+    <text class="right-text">{{resData.sn}}</text>
+  </view>
+  <view class="result-text">
+    <text class="left-text">设备型号</text>
+    <text class="right-text">{{resData.model}}</text>
+  </view>
+  <view class="result-text">
+    <text class="left-text">保修状态</text>
+    <text class="right-text">{{resData.coverage=='active'?'有效':'已过期'}}</text>
+  </view>
+  <view class="result-text">
+    <text class="left-text">销售地</text>
+    <text class="right-text">{{resData.purchase.country=='China'?'国行':'非国行'}}</text>
+  </view>
+</view>
+
+<view class="result" wx:if="{{hasResult&&itype=='activationlock'}}">
+  <view class="result-title">查询结果</view>
+
+  <view class="result-text" wx:if="{{isImei}}">
+    <text class="left-text">IMEI</text>
+    <text class="right-text">{{(undefined==resData.imei||null==resData.imei||''==resData.imei)?resData.sn:resData.imei}}</text>
+  </view>
+  <view class="result-text" wx:if="{{!isImei}}">
+    <text class="left-text">序列号</text>
+    <text class="right-text">{{resData.sn}}</text>
+  </view>
+  <view class="result-text">
+    <text class="left-text">设备型号</text>
+    <text class="right-text">{{resData.model}}</text>
+  </view>
+  <view class="result-text">
+    <text class="left-text">Find My iPhone</text>
+    <text class="right-text">{{resData.locked?'开启':'关闭'}}</text>
+  </view>
+  <view class="result-text">
+    <text class="left-text">更新时间</text>
+    <text class="right-text">{{resData.time}}</text>
+  </view>
+</view>
+
+
+<view class="result" wx:if="{{hasResult&&itype=='icloud'}}">
+  <view class="result-title">查询结果</view>
+
+  <view class="result-text" wx:if="{{isImei}}">
+    <text class="left-text">IMEI</text>
+    <text class="right-text">{{(undefined==resData.imei||null==resData.imei||''==resData.imei)?resData.sn:resData.imei}}</text>
+  </view>
+  <view class="result-text" wx:if="{{!isImei}}">
+    <text class="left-text">序列号</text>
+    <text class="right-text">{{resData.sn}}</text>
+  </view>
+  <view class="result-text">
+    <text class="left-text">设备型号</text>
+    <text class="right-text">{{resData.model}}</text>
+  </view>
+  <view class="result-text">
+    <text class="left-text">激活锁</text>
+    <text class="right-text">{{resData.locked?'是':'否'}}</text>
+  </view>
+  <view class="result-text">
+    <text class="left-text">iCloud状态</text>
+    <text class="right-text">{{resData.icloud=='Lost'?'黑名单(丢失模式)':'白名单'}}</text>
+  </view>
+</view>
+
+<view class="result" wx:if="{{hasResult&&itype=='repair'}}">
+  <view class="result-title">查询结果</view>
+
+  <view class="result-text" wx:if="{{isImei}}">
+    <text class="left-text">IMEI</text>
+    <text class="right-text">{{(undefined==resData.imei||null==resData.imei||''==resData.imei)?resData.sn:resData.imei}}</text>
+  </view>
+  <view class="result-text" wx:if="{{!isImei}}">
+    <text class="left-text">序列号</text>
+    <text class="right-text">{{resData.sn}}</text>
+  </view>
+  <view class="result-text">
+    <text class="left-text">型号</text>
+    <text class="right-text">{{resData.model}}</text>
+  </view>
+  <view class="result-text">
+    <text class="left-text">维修状态</text>
+    <text class="right-text">{{resData.status=='under repair'?'正在维修':(resData.status=='once repaired'?'曾经维修':'无')}}</text>
+  </view>
+  <view class="result-text">
+    <text class="left-text">销售代码</text>
+    <text class="right-text">{{resData.sales}}</text>
+  </view>
+</view>
+
+<view class="result" wx:if="{{hasResult&&itype=='sold'}}">
+  <view class="result-title">查询结果</view>
+  <view class="result-text">
+    <text class="left-text">IMEI</text>
+    <text class="right-text">{{(undefined==resData.imei||null==resData.imei||''==resData.imei)?resData.sn:resData.imei}}</text>
+  </view>
+  <view class="result-text">
+    <text class="left-text">序列号</text>
+    <text class="right-text">{{resData.sn}}</text>
+  </view>
+  <view class="result-text">
+    <text class="left-text">型号</text>
+    <text class="right-text">{{resData.model}}</text>
+  </view>
+  <view class="result-text">
+    <text class="left-text">购买地点</text>
+    <text class="right-text">{{resData.purchase.country}}</text>
+  </view>
+  <view class="result-text">
+    <text class="left-text">是否国行</text>
+    <text class="right-text">{{'China'==resData.purchase.country?'是':'否'}}</text>
+  </view>
+</view>
+
+
+<view class="result" wx:if="{{hasResult&&itype=='serial'}}">
+  <view class="result-title">查询结果</view>
+  <view class="result-text">
+    <text class="left-text">IMEI</text>
+    <text class="right-text">{{(undefined==resData.imei||null==resData.imei||''==resData.imei)?resData.sn:resData.imei}}</text>
+  </view>
+  <view class="result-text">
+    <text class="left-text">序列号</text>
+    <text class="right-text">{{resData.sn}}</text>
+  </view>
+  <view class="result-text">
+    <text class="left-text">设备型号</text>
+    <text class="right-text">{{resData.model}}</text>
+  </view>
+  <view class="memo">
+    <span class="red">温馨提示：</span>如果查出来的序列号/IMEI码与本机显示的序列号/IMEI码不一致，则
+    <span class="red">99%</span> 是翻新机、妖机、黑机。
+  </view>
+</view>
+
+
+<view class="result" wx:if="{{hasResult&&itype=='simlock'}}">
+  <view class="result-title">查询结果</view>
+  <view class="result-text">
+    <text class="left-text">IMEI</text>
+    <text class="right-text">{{(undefined==resData.imei||null==resData.imei||''==resData.imei)?resData.sn:resData.imei}}</text>
+  </view>
+  <view class="result-text">
+    <text class="left-text">序列号</text>
+    <text class="right-text">{{resData.sn}}</text>
+  </view>
+  <view class="result-text">
+    <text class="left-text">设备型号</text>
+    <text class="right-text">{{resData.model}}</text>
+  </view>
+  <view class="result-text">
+    <text class="left-text">网络锁</text>
+    <text class="right-text">{{resData.simlock=='locked'?'有锁':'无锁'}}</text>
+  </view>
+</view>
+<view class="memo morequery" >
+    <button type="primary" bindtap="btnToIndex" >更多查询</button>
+  </view>

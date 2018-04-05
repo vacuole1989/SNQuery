@@ -1,0 +1,14 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/search/index",
+    "pages/result/index"
+  ],
+  "window": {
+    "backgroundColor": "#F1F1F1",
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#FFFFFF",
+    "navigationBarTitleText": "序列号查询",
+    "navigationBarTextStyle": "black"
+  }
+}

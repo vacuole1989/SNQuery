@@ -1,0 +1,136 @@
+@import "../stylesheet.wxss";
+@import "../weui.wxss";
+
+page {
+  background: #fafafa;
+}
+
+.iconfont {
+  font-family: "iconfont" !important;
+  font-size: 40rpx;
+  font-style: normal;
+  float: left;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+.qzf{
+  float: right;
+}
+
+.icon-zhuanfa:before {
+  content: "\e78c";
+}
+
+.big-text {
+  font-size: 30rpx;
+  font-weight: bold;
+  margin-top: 30rpx;
+  text-align: center;
+}
+
+.small-text {
+  font-size: 20rpx;
+  text-align: center;
+}
+
+.logo-view {
+  text-align: center;
+}
+
+.logo {
+  height: 104rpx;
+  margin: 30rpx auto;
+  background-size: contain;
+  width: 100%;
+}
+
+.search-title {
+  color: #999;
+  font-size: 30rpx;
+  height: 60rpx;
+}
+
+.search-title text {
+  float: left;
+  padding-left: 20rpx;
+}
+
+.search-title button {
+  float: right;
+  padding-right: 20rpx;
+}
+
+.search {
+  position: relative;
+  background-color: #f1f1f1;
+}
+
+.search input {
+  color: black;
+  background-color: white;
+  font-size: 30rpx;
+  font-weight: bold;
+  height: 96rpx;
+  border-radius: 15rpx;
+  margin: 0rpx 10rpx;
+  padding-left: 30rpx;
+  margin-bottom: 20rpx;
+}
+
+.search button {
+  margin-left: 20rpx;
+  margin-right: 20rpx;
+}
+
+.search text {
+  color: #999;
+  font-size: 28rpx;
+  padding-left: 20rpx;
+  padding-right: 20rpx;
+  line-height: 96rpx;
+}
+
+.memo {
+  color: #999;
+  font-size: 30rpx;
+  line-height: 50rpx;
+  padding-left: 20rpx;
+  padding-right: 20rpx;
+  padding-top: 20rpx;
+}
+
+.red {
+  color: red;
+}
+
+.black {
+  color: black;
+}
+
+.black text {
+  color: black;
+}
+
+.bold {
+  font-weight: bold;
+}
+
+.space {
+  height: 50rpx;
+  clear: both;
+}
+
+.shareBtn {
+  padding: 0rpx;
+  font-size: 30rpx;
+  background-color: transparent;
+  color: #1980cd;
+  font-weight: bold;
+  line-height: 40rpx;
+  display: inline;
+  text-align: right;
+}
+
+.shareBtn::after {
+  display: none;
+}

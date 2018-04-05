@@ -1,0 +1,97 @@
+<view class="container">
+  <view class="big-text">iPhone X</view>
+  <view class="small-text">hello,未来</view>
+  <view class="loge-view">
+    <image class="logo" src="../logo.gif"></image>
+  </view>
+  <view class="search-title">
+    <text>请输入您的序列号/IMEI码</text>
+    <button class="shareBtn" open-type="share">
+      <span class="iconfont icon-zhuanfa"></span>
+      <span class="qzf">去转发</span>
+    </button>
+  </view>
+  <view class="search">
+    <input placeholder="设置 > 通用 > 关于本机" bindinput="inputSN" />
+    <button type="primary" bindtap="searchTag">查询</button>
+  </view>
+  <view class="memo" wx:if="{{!hasResult}}">
+    序列号/IMEI码查询：可查询您iPhone首次激活日期、保修、延保、是否官换机、是否官翻机（官方翻新机）,未激活机器请先激活后查询。同时可查询激活锁状态以及ID黑白名单。
+  </view>
+  <view class="memo" wx:if="{{!hasResult}}">
+    <span class="red">小提示</span>：如果查出来的序列号/IMEI码与本机显示的序列号/IMEI码不一致，
+    <span class="blue">99%</span>是翻新机、妖机、黑机。
+  </view>
+  <view class="memo" wx:if="{{!hasResult}}">
+    全新机维修状态一定要显示“
+    <span class="red">无</span>”，否则
+    <span class="red">非全新机</span>。
+  </view>
+  <view class="result" wx:if="{{hasResult}}">
+    <view class="result-title">查询结果</view>
+    <view class="result-text" wx:if="{{isImei}}">
+      <text class="left-text">IMEI</text>
+      <text class="right-text">{{resData.imei}}</text>
+    </view>
+    <view class="result-text" wx:if="{{!isImei}}">
+      <text class="left-text">序列号</text>
+      <text class="right-text">{{resData.sn}}</text>
+    </view>
+    <view class="result-text">
+      <text class="left-text">型号</text>
+      <text class="right-text">{{resData.model}}</text>
+    </view>
+    <view class="result-text" wx:if="{{!isImei}}">
+      <text class="left-text">容量</text>
+      <text class="right-text">{{resData.capacity}}</text>
+    </view>
+    <view class="result-text" wx:if="{{!isImei}}">
+      <text class="left-text">颜色</text>
+      <text class="right-text">{{resData.color}}</text>
+    </view>
+    <view class="result-btns">
+
+      <button wx:for="{{btns}}" wx:for-item="item" type="primary" bindtap="btnTag" data-itype="{{item.type}}" data-title="{{item.showTitle}}">{{item.name}}</button>
+      <!-- <button  type="primary" bindtap="btnTag" data-itype="appraisal" data-title="序列号/IMEI码深度查询 1元/次">序列号/IMEI码深度查询</button>
+      <button type="primary" bindtap="btnTag" data-itype="cn" data-title="鉴别行货正品（国行） 1元/次">鉴别行货正品（国行）</button>
+      <button type="primary" bindtap="btnTag" data-itype="activationlock" data-title="苹果激活锁查询 1.5元/次">苹果激活锁查询</button>
+      <button type="primary" bindtap="btnTag" data-itype="icloud" data-title="ID黑白名单查询 1.8元/次">ID黑白名单查询</button>
+      <button type="primary" bindtap="btnTag" data-itype="repair" data-title="苹果维修记录查询 1.5元/次">苹果维修记录查询</button>
+      <button type="primary" bindtap="btnTag" data-itype="sold" data-title="国行、GSX销售地查询 5元/次">国行、GSX销售地查询</button>
+      <button type="primary" bindtap="btnTag" data-itype="serial" data-title="鉴定翻新机、妖机、黑机查询 1元/次">鉴定翻新机黑机</button>
+      <button type="primary" bindtap="btnTag" data-itype="simlock" data-title="运营商SIM卡网络锁查询 3元/次">SIM卡网络锁查询</button>
+      <button type="primary" bindtap="btnTag" data-itype="instructions" data-title="查询说明书鉴定指南">查询说明书鉴定指南</button> -->
+    </view>
+    <view class="space"></view>
+  </view>
+</view>
+
+
+
+<view class="weui-tab">
+  <view class="weui-tab__panel">
+
+  </view>
+  <view class="weui-tabbar">
+    <view href="javascript:;" class="weui-tabbar__item">
+      <view style="display: inline-block;position: relative;">
+        <image src="../icon_tabbar.png" alt="" class="weui-tabbar__icon"></image>
+      </view>
+      <view class="weui-tabbar__label">微信</view>
+    </view>
+    <view href="javascript:;" class="weui-tabbar__item">
+      <image src="../icon_tabbar.png" alt="" class="weui-tabbar__icon"></image>
+      <view class="weui-tabbar__label">通讯录</view>
+    </view>
+    <view href="javascript:;" class="weui-tabbar__item">
+      <view style="display: inline-block;position: relative;">
+        <image src="../icon_tabbar.png" alt="" class="weui-tabbar__icon"></image>
+      </view>
+      <view class="weui-tabbar__label">发现</view>
+    </view>
+    <view href="javascript:;" class="weui-tabbar__item weui-bar__item_on">
+      <image src="../icon_tabbar.png" alt="" class="weui-tabbar__icon"></image>
+      <view class="weui-tabbar__label">我</view>
+    </view>
+  </view>
+</view>

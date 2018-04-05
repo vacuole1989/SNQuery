@@ -1,0 +1,145 @@
+@import "../stylesheet.wxss";
+
+page {
+  background: #fafafa;
+}
+
+.iconfont {
+  font-family: "iconfont" !important;
+  font-size: 40rpx;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  float: left;
+}
+
+.qzf {
+  float: right;
+}
+
+.shareBtn {
+  padding: 0rpx;
+  font-size: 30rpx;
+  background-color: transparent;
+  margin: 0rpx;
+  color: #1980cd;
+  display: inline;
+  font-weight: bold;
+  line-height: 80rpx;
+}
+
+.span-title {
+  color: #999;
+  font-size: 30rpx;
+  padding-left: 20rpx;
+  height: 80rpx;
+  line-height: 80rpx;
+}
+
+.shareBtn::after {
+  display: none;
+}
+
+.icon-zhuanfa:before {
+  content: "\e78c";
+}
+
+.search-title {
+  color: #999;
+  font-size: 30rpx;
+  height: 80rpx;
+}
+
+.search-title text {
+  float: left;
+  padding-left: 20rpx;
+}
+
+.search-title button {
+  float: right;
+  padding-right: 20rpx;
+}
+
+.search {
+  position: relative;
+  background-color: #f1f1f1;
+}
+
+.search .preTitle {
+  position: absolute;
+  left: 0;
+  top: 50;
+  height: 96rpx;
+  font-size: 28rpx;
+  line-height: 96rpx;
+  padding-left: 20rpx;
+}
+
+.search input {
+  color: black;
+  background-color: white;
+  font-size: 30rpx;
+  font-weight: bold;
+  height: 96rpx;
+  padding-left: 180rpx;
+}
+
+.search button {
+  margin-left: 20rpx;
+  margin-right: 20rpx;
+  margin-top: 20rpx;
+}
+
+.memo {
+  color: #999;
+  font-size: 30rpx;
+  line-height: 32px;
+  padding-left: 20rpx;
+  padding-right: 20rpx;
+  padding-top: 20rpx;
+}
+
+.red {
+  color: red;
+}
+
+.black {
+  color: black;
+}
+
+.black text {
+  color: black;
+}
+
+.bold {
+  font-weight: bold;
+}
+
+.space {
+  height: 50rpx;
+  clear: both;
+}
+
+.link {
+  text-decoration: underline;
+  color: blue;
+}
+
+.insBook {
+  font-size: 50rpx;
+  text-align: center;
+}
+
+.ligntblue {
+  color: #34aff0;
+}
+
+.pretitle {
+  font-size: 34rpx;
+  font-weight: bold;
+}
+
+
+.insImg{
+  width: 100%;
+}

@@ -1,0 +1,431 @@
+<view class="container">
+  <view class="search-title" wx:if="{{itype!='instructions'}}">
+    <text class="span-title">{{title}}</text>
+    <button class="shareBtn" open-type="share">
+      <span class="iconfont icon-zhuanfa"></span>
+      <span class="qzf">去转发</span>
+    </button>
+  </view>
+  <view class="search" wx:if="{{itype!='instructions'}}">
+    <view class="preTitle">IMEI/序列号</view>
+    <input placeholder="设置 > 通用 > 关于本机" value="{{snNumber}}" bindinput="inputSN" />
+    <button type="primary" bindtap="searchTag">查询</button>
+  </view>
+
+  <view class="memo" wx:if="{{!hasResult&&(itype=='appraisal')}}">
+    请核实序列号或IMEI码是否正确（未激活的设备请先激活48小时后查询）如果查询失败，系统将在48小时内自动退款。
+  </view>
+  <view class="memo red" wx:if="{{!hasResult&&(itype=='appraisal')}}">
+    查询设备首次激活日期、保修、延保、是否官换机，是否官翻机（官方翻新机）。
+  </view>
+  <view class="memo black" wx:if="{{!hasResult&&(itype=='appraisal')}}">
+    <view class="black bold">温馨提示：</view>
+    <view>对比查询结果中的iPhone颜色、内存容量、激活时间。若与手中的iPhone完全一致，则无问题；若有出入，则需特别注意！如查询的iPhone激活时间与自己手动激活时间（购买日期）差在两日内，则是正常值，若时间差别久，则说明是翻新机！另外请留意查询结果中是否
+      <span class="red">官翻机、官换机</span>。</view>
+  </view>
+
+
+
+
+  <view class="memo" wx:if="{{!hasResult&&(itype=='sold')}}">
+    请核实序列号或IMEI码是否正确。如果查询失败，系统将在48小时内自动退款。
+  </view>
+  <view class="memo" wx:if="{{!hasResult&&(itype=='sold')}}">
+    国内行货有一年保修，可以享受三包服务，非国行在国内没有售后服务保障。在购买国行、水货手机、二手手机时 ，可通过GSX销售地查询设备激活销售地信息。
+    <span class="red bold">（可查询全球iPhone任何国家版本）</span>
+  </view>
+  <view class="memo black" wx:if="{{!hasResult&&(itype=='sold')}}">
+    <view class="black bold">查询结果示例：</view>
+    <view>IMEI：359167074097936</view>
+    <view>序列号：DNPSG69WHG75</view>
+    <view>型号：IPHONE 7 128GB JET BLACK</view>
+    <view>购买地点：China</view>
+    <view>是否国行：是</view>
+  </view>
+
+
+  <view class="memo" wx:if="{{!hasResult&&(itype=='activationlock')}}">
+    请核实序列号或IMEI码是否正确。如果查询失败，系统将在48小时内自动退款。
+  </view>
+  <view class="memo" wx:if="{{!hasResult&&(itype=='activationlock')}}">
+    在转移 iPhone、iPad、iPod touch 或 Apple Watch 的所有权前，请确保已关闭“激活锁”，并且设备已可供下一位用户使用。
+  </view>
+  <view class="memo black bold" wx:if="{{!hasResult&&(itype=='activationlock')}}">
+    另外查询iPhone激活时间，鉴定翻新：
+    <span class="red link" bindtap="btnTag" data-itype="appraisal" data-title="序列号/IMEI码深度查询 1元/次">请点击这里</span>
+  </view>
+  <view class="memo black" wx:if="{{!hasResult&&(itype=='activationlock')}}">
+    <view class="black bold">温馨提示：</view>
+    <view>在 iPhone、iPad 或 iPod touch 上开启“查找我的 iPhone”后，您的 Apple ID 便会安全地储存在 Apple 的激活服务器上并关联到您的设备。此后，任何人想要关闭“查找我的 iPhone”、抹掉或重新激活并使用您的设备，都必须先输入您的 Apple ID 帐户密码或设备锁屏密码。</view>
+    <view>激活锁会在您设置“查找我的 iPhone”时自动启用。</view>
+  </view>
+
+
+  <view class="memo" wx:if="{{!hasResult&&(itype=='icloud')}}">
+    请核实序列号或IMEI码是否正确。如果查询失败，系统将在48小时内自动退款。
+  </view>
+  <view class="memo" wx:if="{{!hasResult&&(itype=='icloud')}}">
+    如果您忘记将设备放在哪里了（无论设备是丢失，还是您认为设备已经失窃），应立即使用“查找我的 iPhone”将它置于“丢失模式”
+  </view>
+  <view class="memo black" wx:if="{{!hasResult&&(itype=='icloud')}}">
+    <view class="black bold">查询结果说明：</view>
+    <view>白名单：说明iPhone未开启ID锁不需要验证 Apple ID 也可以正常激活设备；或是已开启“Find My iPhone”激活锁，刷机时需要验证绑定的 Apple ID 才能激活设备。</view>
+    <view>黑名单：说明iPhone已开启“Find My iPhone”激活锁，并且设置了“
+      <span class="red">丢失模式</span>”，iPhone上所有信息已被苹果公司抹除，被苹果判断为丢失或是失窃的设备，也就是所谓的“
+      <span class="red">黑机</span>”。</view>
+  </view>
+
+  <view class="memo" wx:if="{{!hasResult&&(itype=='repair')}}">
+    （本查询仅限官方维修记录）请确保你输入的IMEI/序列号准确无误。如果查询失败，系统将在48小时内自动退款。
+  </view>
+  <view class="memo" wx:if="{{!hasResult&&(itype=='repair')}}">
+    返回结果时间为0-30分钟左右，请您耐心等待。
+  </view>
+  <view class="memo black" wx:if="{{!hasResult&&(itype=='repair')}}">
+    <view class="black bold">查询结果示例：</view>
+    <view>序列号：DNPSG69WH***</view>
+    <view>型号：IPHONE 7</view>
+    <view>维修状态: 无（曾经维修/正在维修）</view>
+    <view>销售代码：IN02</view>
+  </view>
+  <view class="memo red bold" wx:if="{{!hasResult&&(itype=='repair')}}">
+    温馨提示：全新机维修状态一定要显示“无”，否则就不是全新机。
+  </view>
+
+
+  <view class="memo" wx:if="{{!hasResult&&(itype=='serial')}}">
+    请核实序列号或IMEI码是否正确。如果查询失败，系统将在48小时内自动退款。
+  </view>
+  <view class="memo black" wx:if="{{!hasResult&&(itype=='serial')}}">
+    <view class="black bold"> 温馨提示：</view>
+    <view>如果查出来的序列号/IMEI码与本机显示的序列号/IMEI码不一致，则
+      <span class="red">99%</span> 是翻新机、妖机、黑机。</view>
+  </view>
+  <view class="memo red bold" wx:if="{{!hasResult&&(itype=='serial')}}">
+    温馨提示：该查询项暂时只支持iPhone
+  </view>
+
+
+  <view class="memo" wx:if="{{!hasResult&&(itype=='cn')}}">
+    请核实序列号或IMEI码是否正确。如果查询失败，系统将在48小时内自动退款。
+  </view>
+  <view class="memo" wx:if="{{!hasResult&&(itype=='cn')}}">
+    国内行货有
+    <span class="blue">一年保修</span>，可以享受三包服务，非国行在国内没有售后服务保障。
+  </view>
+
+
+  <view class="memo" wx:if="{{!hasResult&&(itype=='simlock')}}">
+    请核实序列号或IMEI码是否正确。如果查询失败，系统将在48小时内自动退款。
+  </view>
+  <view class="memo" wx:if="{{!hasResult&&(itype=='simlock')}}">
+    iPhone网络锁是手机运营商为了防止客户违约，,给手机加的一个锁.防止使用其他电话公司SIM卡。有锁版iPhone比如美版的AT&T，英国的O2，这样的手机只能插入相应运营商的SIM卡才能使用，插入其它的卡则无法使用。无锁版iPhone也叫官方解锁版，这种手机一般价格都会比较高，但好处就在于任何一家运营商的SIM卡都可以顺利地帮助iPhone激活，并能够正常使用。无锁版可以随意升级系统而且不必考虑信号破解问题。
+  </view>
+
+
+  <view class="memo black " wx:if="{{!hasResult&&(itype=='instructions')}}">
+    
+    <!-- <view class="insBook">查询说明书</view>
+    <view>
+      <span class="ligntblue pretitle">①序列号/ IMEI码深度查询：</span>可查询iPhone首次激活日期、保修、延保、是否
+      <span class="ligntblue">官换机</span>、是否
+      <span class="ligntblue">官翻机</span>（官方翻新机）。（未激活的iPhone请先激活
+      <span class="red">48</span>小时后查询）</view>
+    <view>对比查询结果中的iPhone颜色、内存容量、激活时间：若与手中的iPhone完全一致，则无问题；若有出入，则就要特别注意！如查询的iPhone激活时间与自己手动激活时间（购买日期）差在
+      <span class="ligntblue">两日</span>内，则是正常值，若时间差别久，则说明是
+      <span class="ligntblue">翻新机</span>！</view>
+    <view>什么是
+      <span class="ligntblue">官换机</span>：也叫服务机。是全新未激活的官方正版机器。因为苹果的保修政策，苹果维修政策是只换不修，如果你的机器在保修期内坏掉，售后一般都会直接给你换一部全新的机器，这台机器就叫官换机，不代表官换机就是官方翻新机器。当我们手机出现问题的时候，给售后的是一个裸机，理所当然换出来的也是裸机，网上销售的官方换机的包装和里面的配件都不是原装的，卖家极有可能用国产的高仿配件以次充好。</view>
+    <view>什么是
+      <span class="ligntblue">官翻机</span>：官方翻新机，新机一般是由因质量问题退换的手机或者前期用户使用过的评测机型所组成。厂商回收它们之后再进行二次的修复或者更换零部件，继而重新组装而成一款全新产品，最终再被投放到市场当中进行再次销售。官方翻新产品都会明确的在包装以及机身内部标示官方翻新机，它们相比正常销售的全新产品有着一定比例的折扣，在价格方面相对偏低。</view>
+    <view>什么是
+      <span class="ligntblue">妖机</span>：所谓妖机，就是奸商通过修改手机字库芯片，修改手机的序列号和IMEI以及型号，使原本有锁机冒充港版，卖港版的价格。因为他修改的序列号等都是官方有的，所以通过查序列号是无法知道是不是妖机的。最直接的辨别方法目前只有刷机的时候妖机会出现3194错误，而且永远无法升级固件。</view>
+    <view>什么是
+      <span class="ligntblue">黑机</span>：所谓黑机，就是奸商经过某种渠道，把已经被售后换成新机的旧机子拿出来卖（或是被替换的主板自己组装），这类机子因为已经在售后登记被换新机或者官翻机了，序列号就会被新机所替代，往往无法查该机序列号，或者提示序列号已经被替代。辨别黑机最简单了，只要把序列号一查，黑机会直接提示
+      <span class="ligntblue">序列号无效</span>，或者已被替代。</view>
+    <view>另外，
+      <span class="ligntblue">翻新机</span>是无良奸商回收旧手机后自行进行维修更换配件后充当新机来卖，而且卖新机的价格。
+      <span class="ligntblue">官翻机</span>是厂商直接进行维修更换配件并经过严格测试之后再出售，价格就按照官翻价卖。</view>
+    <view>
+      <span class="ligntblue pretitle">②鉴别行货正品(国行)：</span>国内行货有
+      <span class="ligntblue">一年保修</span>，可以享受三包服务，非国行在国内没有售后服务保障。 </view>
+    <view>
+      <span class="ligntblue pretitle">③国行、GSX销售地查询：</span>在购买国行、水货手机、二手手机时 ，可通过GSX销售地查询设备激活时销售地信息。
+      <span class="bold">（可查询全球iPhone任何国家版本）</span>
+    </view>
+    <view>
+      <span class="ligntblue pretitle">④鉴定翻新机、妖机、黑机：</span>
+      <span class="bold">如果查出来的IMEI码与本机显示的IMEI码不一致，则
+        <span class="red">99%</span> 是翻新机、妖机、黑机。</span>
+    </view>
+    <view>
+      <span class="ligntblue pretitle">⑤iPhone维修记录查询：</span>在您购买iPhone手机（全新机、二手iPhone）时，激活48小时后，建议查询您iPhone是否经过苹果售后维修。
+      <span class="bold">温馨提示：</span>全新机时，查询结果中维修状态一定显示“无”，否则就不是全新机。
+    </view>
+    <view>
+      <span class="ligntblue pretitle">⑥苹果激活锁查询：</span>在转移 iPhone、iPad、iPod touch 或 Apple Watch 的所有权前，请
+      <span class="ligntblue">确保</span>已关闭“Find My iPhone”激活锁，设备才能供下一位用户使用。（特别是买卖二手机时要一定确定已经
+      <span class="ligntblue">关闭激活锁</span>） 。</view>
+    <view>
+      <span class="ligntblue pretitle">⑧ID黑白名单查询：</span>苹果ID黑白查询（iCloud状态）。</view>
+    <view>
+      <span class="bold">白名单</span>：说明iPhone未开启ID锁不需要验证 Apple ID 也可以正常激活设备；或是已开启“Find My iPhone”激活锁，刷机时需要验证绑定的 Apple ID 才能激活设备。</view>
+    <view>
+      <span class="bold">黑名单</span>：说明iPhone已开启“Find My iPhone”激活锁，并且设置了“
+      <span class="bold">丢失模式</span>”，iPhone上所有信息已被苹果公司
+      <span class="bold">抹除</span>，被苹果判断为丢失或是失窃的设备，也就是所谓的“
+      <span class="bold">黑机</span>”。建议大家这类iPhone千万不要购买。</view>
+    <view>
+      <span class="ligntblue pretitle">⑨运营商SIM卡网络锁查询：</span>
+    </view>
+    <view>
+      <span class="bold">有锁版</span>iPhone比如美版的AT&T，英国的O2，这样的手机只能插入相应运营商的SIM卡才能使用，插入其它的卡则无法使用。</view>
+    <view>
+      <span class="bold">无锁版</span>可以随意升级系统而且不必考虑信号破解问题（价格相对高些）。</view> -->
+      <image class="insImg" src="{{insImg}}" mode="widthFix"></image>
+  </view>
+
+
+
+  <view class="result" wx:if="{{hasResult&&itype=='appraisal'}}">
+    <view class="result-title">查询结果</view>
+    <view class="result-text" wx:if="{{isImei}}">
+      <text class="left-text">IMEI</text>
+      <text class="right-text">{{(undefined==resData.imei||null==resData.imei||''==resData.imei)?resData.sn:resData.imei}}</text>
+    </view>
+    <view class="result-text" wx:if="{{!isImei}}">
+      <text class="left-text">序列号</text>
+      <text class="right-text">{{resData.sn}}</text>
+    </view>
+    <view class="result-text">
+      <text class="left-text">设备名称</text>
+      <text class="right-text">{{resData.model}}</text>
+    </view>
+    <view class="result-text">
+      <text class="left-text">颜色容量</text>
+      <text class="right-text">{{resData.color}} {{resData.storage}}</text>
+    </view>
+    <view class="result-text">
+      <text class="left-text">是否激活</text>
+      <text class="right-text">{{''==resData.purchase.date?'否':'是'}}</text>
+    </view>
+    <view class="result-text">
+      <text class="left-text">激活日期</text>
+      <text class="right-text">{{resData.purchase.date}}</text>
+    </view>
+    <view class="result-text">
+      <text class="left-text">技术支持</text>
+      <text class="right-text">{{resData.support=='expired'?'已过期':resData.support}}</text>
+    </view>
+    <view class="result-text">
+      <text class="left-text">保修状态</text>
+      <text class="right-text">剩余{{resData.daysleft}}天</text>
+    </view>
+    <view class="result-text">
+      <text class="left-text">是否延保</text>
+      <text class="right-text">{{resData.applecare?'是':'否'}}</text>
+    </view>
+    <view class="result-text">
+      <text class="left-text">是否官换机</text>
+      <text class="right-text">{{resData.status=='refurbished'?'是':'否'}}</text>
+    </view>
+    <view class="result-text">
+      <text class="left-text">是否官翻机</text>
+      <text class="right-text">{{resData.status=='repaired'?'是':'否'}}</text>
+    </view>
+    <view class="result-text">
+      <text class="left-text">产地</text>
+      <text class="right-text">{{resData.manufacture.factory}}</text>
+    </view>
+  </view>
+
+
+  <view class="result" wx:if="{{hasResult&&itype=='cn'}}">
+    <view class="result-title">查询结果</view>
+
+    <view class="result-text" wx:if="{{isImei}}">
+      <text class="left-text">IMEI</text>
+      <text class="right-text">{{(undefined==resData.imei||null==resData.imei||''==resData.imei)?resData.sn:resData.imei}}</text>
+    </view>
+    <view class="result-text" wx:if="{{!isImei}}">
+      <text class="left-text">序列号</text>
+      <text class="right-text">{{resData.sn}}</text>
+    </view>
+    <view class="result-text">
+      <text class="left-text">设备型号</text>
+      <text class="right-text">{{resData.model}}</text>
+    </view>
+    <view class="result-text">
+      <text class="left-text">保修状态</text>
+      <text class="right-text">{{resData.coverage=='active'?'有效':'已过期'}}</text>
+    </view>
+    <view class="result-text">
+      <text class="left-text">销售地</text>
+      <text class="right-text">{{resData.purchase.country=='China'?'国行':'非国行'}}</text>
+    </view>
+  </view>
+
+
+
+
+
+  <view class="result" wx:if="{{hasResult&&itype=='activationlock'}}">
+    <view class="result-title">查询结果</view>
+
+    <view class="result-text" wx:if="{{isImei}}">
+      <text class="left-text">IMEI</text>
+      <text class="right-text">{{(undefined==resData.imei||null==resData.imei||''==resData.imei)?resData.sn:resData.imei}}</text>
+    </view>
+    <view class="result-text" wx:if="{{!isImei}}">
+      <text class="left-text">序列号</text>
+      <text class="right-text">{{resData.sn}}</text>
+    </view>
+    <view class="result-text">
+      <text class="left-text">设备型号</text>
+      <text class="right-text">{{resData.model}}</text>
+    </view>
+    <view class="result-text">
+      <text class="left-text">Find My iPhone</text>
+      <text class="right-text">{{resData.locked?'开启':'关闭'}}</text>
+    </view>
+    <view class="result-text">
+      <text class="left-text">更新时间</text>
+      <text class="right-text">{{resData.time}}</text>
+    </view>
+  </view>
+
+
+  <view class="result" wx:if="{{hasResult&&itype=='icloud'}}">
+    <view class="result-title">查询结果</view>
+
+    <view class="result-text" wx:if="{{isImei}}">
+      <text class="left-text">IMEI</text>
+      <text class="right-text">{{(undefined==resData.imei||null==resData.imei||''==resData.imei)?resData.sn:resData.imei}}</text>
+    </view>
+    <view class="result-text" wx:if="{{!isImei}}">
+      <text class="left-text">序列号</text>
+      <text class="right-text">{{resData.sn}}</text>
+    </view>
+    <view class="result-text">
+      <text class="left-text">设备型号</text>
+      <text class="right-text">{{resData.model}}</text>
+    </view>
+    <view class="result-text">
+      <text class="left-text">激活锁</text>
+      <text class="right-text">{{resData.locked?'是':'否'}}</text>
+    </view>
+    <view class="result-text">
+      <text class="left-text">iCloud状态</text>
+      <text class="right-text">{{resData.icloud=='Lost'?'黑名单(丢失模式)':'白名单'}}</text>
+    </view>
+  </view>
+
+  <view class="result" wx:if="{{hasResult&&itype=='repair'}}">
+    <view class="result-title">查询结果</view>
+
+    <view class="result-text" wx:if="{{isImei}}">
+      <text class="left-text">IMEI</text>
+      <text class="right-text">{{(undefined==resData.imei||null==resData.imei||''==resData.imei)?resData.sn:resData.imei}}</text>
+    </view>
+    <view class="result-text" wx:if="{{!isImei}}">
+      <text class="left-text">序列号</text>
+      <text class="right-text">{{resData.sn}}</text>
+    </view>
+    <view class="result-text">
+      <text class="left-text">型号</text>
+      <text class="right-text">{{resData.model}}</text>
+    </view>
+    <view class="result-text">
+      <text class="left-text">维修状态</text>
+      <text class="right-text">{{resData.status=='under repair'?'正在维修':(resData.status=='once repaired'?'曾经维修':'无')}}</text>
+    </view>
+    <view class="result-text">
+      <text class="left-text">销售代码</text>
+      <text class="right-text">{{resData.sales}}</text>
+    </view>
+  </view>
+
+  <view class="result" wx:if="{{hasResult&&itype=='sold'}}">
+    <view class="result-title">查询结果</view>
+    <view class="result-text">
+      <text class="left-text">IMEI</text>
+      <text class="right-text">{{(undefined==resData.imei||null==resData.imei||''==resData.imei)?resData.sn:resData.imei}}</text>
+    </view>
+    <view class="result-text">
+      <text class="left-text">序列号</text>
+      <text class="right-text">{{resData.sn}}</text>
+    </view>
+    <view class="result-text">
+      <text class="left-text">型号</text>
+      <text class="right-text">{{resData.model}}</text>
+    </view>
+    <view class="result-text">
+      <text class="left-text">购买地点</text>
+      <text class="right-text">{{resData.purchase.country}}</text>
+    </view>
+    <view class="result-text">
+      <text class="left-text">是否国行</text>
+      <text class="right-text">{{'China'==resData.purchase.country?'是':'否'}}</text>
+    </view>
+  </view>
+
+
+  <view class="result" wx:if="{{hasResult&&itype=='serial'}}">
+    <view class="result-title">查询结果</view>
+    <view class="result-text">
+      <text class="left-text">IMEI</text>
+      <text class="right-text">{{(undefined==resData.imei||null==resData.imei||''==resData.imei)?resData.sn:resData.imei}}</text>
+    </view>
+    <view class="result-text">
+      <text class="left-text">序列号</text>
+      <text class="right-text">{{resData.sn}}</text>
+    </view>
+    <view class="result-text">
+      <text class="left-text">设备型号</text>
+      <text class="right-text">{{resData.model}}</text>
+    </view>
+    <view class="memo">
+      <span class="red">温馨提示：</span>如果查出来的序列号/IMEI码与本机显示的序列号/IMEI码不一致，则
+      <span class="red">99%</span> 是翻新机、妖机、黑机。
+    </view>
+  </view>
+
+
+  <view class="result" wx:if="{{hasResult&&itype=='simlock'}}">
+    <view class="result-title">查询结果</view>
+    <view class="result-text">
+      <text class="left-text">IMEI</text>
+      <text class="right-text">{{(undefined==resData.imei||null==resData.imei||''==resData.imei)?resData.sn:resData.imei}}</text>
+    </view>
+    <view class="result-text">
+      <text class="left-text">序列号</text>
+      <text class="right-text">{{resData.sn}}</text>
+    </view>
+    <view class="result-text">
+      <text class="left-text">设备型号</text>
+      <text class="right-text">{{resData.model}}</text>
+    </view>
+    <view class="result-text">
+      <text class="left-text">网络锁</text>
+      <text class="right-text">{{resData.simlock=='locked'?'有锁':'无锁'}}</text>
+    </view>
+
+  </view>
+
+
+  <view class="result-btns" wx:if="{{hasResult}}">
+    <button wx:for="{{btns}}" wx:for-item="item" type="primary"  bindtap="btnTag" data-itype="{{item.type}}" data-title="{{item.showTitle}}">{{item.name}}</button>
+    <!-- <button type="primary" bindtap="btnTag" data-itype="appraisal" data-title="序列号/IMEI码深度查询 1元/次">序列号/IMEI码深度查询</button>
+    <button type="primary" bindtap="btnTag" data-itype="cn" data-title="鉴别行货正品（国行） 1元/次">鉴别行货正品（国行）</button>
+    <button type="primary" bindtap="btnTag" data-itype="activationlock" data-title="苹果激活锁查询 1.5元/次">苹果激活锁查询</button>
+    <button type="primary" bindtap="btnTag" data-itype="icloud" data-title="ID黑白名单查询 1.8元/次">ID黑白名单查询</button>
+    <button type="primary" bindtap="btnTag" data-itype="repair" data-title="苹果维修记录查询 1.5元/次">苹果维修记录查询</button>
+    <button type="primary" bindtap="btnTag" data-itype="sold" data-title="国行、GSX销售地查询 5元/次">国行、GSX销售地查询</button>
+    <button type="primary" bindtap="btnTag" data-itype="serial" data-title="鉴定翻新机、妖机、黑机查询 1元/次">鉴定翻新机、黑机</button>
+    <button type="primary" bindtap="btnTag" data-itype="simlock" data-title="运营商SIM卡网络锁查询 3元/次">SIM卡网络锁查询</button>
+    <button type="primary" bindtap="btnTag" data-itype="instructions" data-title="查询说明书鉴定指南">查询说明书\n鉴定指南</button> -->
+  </view>
+  <view class="space" wx:if="{{hasResult}}"></view>
+
+
+</view>
