@@ -1,4 +1,4 @@
-<view class="container" wx:if="{{show=='home'}}">
+<view class="container" wx:if="{{show=='search'}}">
   <view class="big-text">iPhone X</view>
   <view class="small-text">hello,未来</view>
   <view class="loge-view">
@@ -99,14 +99,7 @@
 
 
 <view class="containerhistory" wx:if="{{show=='history'}}">
-  <view class="result">
-    <view class="result-text-h" >
-      <view class="left-text-h">序列号：EJHRKJFFDSFGKDSJF</view>
-      <view class="left-text-h">查询结果：{{sysData.model}}</view>
-      <view class="left-text-h">查询时间：2018-04-06 11:30:00</view>
-    </view>
-    <view class="space"></view>
-  </view>
+  <web-view src="https://mp.weixin.qq.com/"></web-view>
 </view>
 
 
@@ -117,24 +110,25 @@
   <view class="weui-tab__panel">
   </view>
   <view class="weui-tabbar">
-    <view bindtap="setHome" class="weui-tabbar__item">
-      <view style="display: inline-block;position: relative;">
-        <image src="../home.png" alt="" class="weui-tabbar__icon" wx:if="{{show=='home'}}"></image>
-        <image src="../home_gray.png" alt="" class="weui-tabbar__icon" wx:if="{{show!='home'}}"></image>
-      </view>
-      <view class="weui-tabbar__label">首页</view>
-    </view>
+    
     <view bindtap="setJianding" class="weui-tabbar__item">
       <image src="../jianding.png" alt="" class="weui-tabbar__icon" wx:if="{{show=='jianding'}}"></image>
       <image src="../jianding_gray.png" alt="" class="weui-tabbar__icon" wx:if="{{show!='jianding'}}"></image>
-      <view class="weui-tabbar__label">真伪鉴定</view>
+      <view class="weui-tabbar__label">真伪</view>
+    </view>
+    <view bindtap="setSearch" class="weui-tabbar__item">
+      <view style="display: inline-block;position: relative;">
+        <image src="../search.png" alt="" class="weui-tabbar__icon" wx:if="{{show=='search'}}"></image>
+        <image src="../search_gray.png" alt="" class="weui-tabbar__icon" wx:if="{{show!='search'}}"></image>
+      </view>
+      <view class="weui-tabbar__label">查询</view>
     </view>
     <view bindtap="setHistory" class="weui-tabbar__item">
       <view style="display: inline-block;position: relative;">
         <image src="../history.png" alt="" class="weui-tabbar__icon"  wx:if="{{show=='history'}}"></image>
         <image src="../history_gray.png" alt="" class="weui-tabbar__icon" wx:if="{{show!='history'}}"></image>
       </view>
-      <view class="weui-tabbar__label">查询记录</view>
+      <view class="weui-tabbar__label">快报</view>
     </view>
   </view>
 </view>

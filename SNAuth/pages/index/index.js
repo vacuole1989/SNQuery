@@ -9,10 +9,8 @@ Page({
     isImei: false,
     btns: [],
     insImg: '',
-    show: 'home',
-    sysData: {
-      model:''
-    }
+    show: 'jianding',
+    sysData: {}
   },
   btnTag: function (event) {
     app.globalData.phone.snNumber = this.data.snNumber;
@@ -22,9 +20,9 @@ Page({
       url: '/pages/search/index'
     });
   },
-  setHome: function () {
+  setSearch: function () {
     this.setData({
-      show: 'home'
+      show: 'search'
     })
   },
   setJianding: function () {
@@ -111,7 +109,7 @@ Page({
   onShareAppMessage: function (res) {
     if (res.from === 'button') {
 
-    }else{
+    } else {
       return {
         title: '序列号查询',
         path: '/pages/index/index',
@@ -122,7 +120,7 @@ Page({
         }
       }
     }
-   
+
   },
   onLoad: function () {
     var _this = this;
@@ -141,8 +139,8 @@ Page({
     })
     wx.getSystemInfo({
       success: function (res) {
-        var mm=res.model;
-        if (mm.indexOf('<')>-1){
+        var mm = res.model;
+        if (mm.indexOf('<') > -1) {
           res.model = mm.substring(0, mm.indexOf('<'));
         }
         _this.setData({

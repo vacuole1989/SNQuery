@@ -1,0 +1,78 @@
+/**app.wxss**/
+
+.container {
+  height: 100%;
+  box-sizing: border-box;
+  font-family: Helvetica;
+}
+
+.blue {
+  color: #1781cd;
+}
+.red{
+  color: red;
+}
+.black{
+  color: black;
+}
+.black text{
+  color: black;
+}
+.bold{
+  font-weight: bold;
+}
+button[type="primary"] {
+  background-color: #1980cd;
+  color: white;
+}
+
+.button-hover[type="primary"] {
+  color: white;
+  background-color: #3495de;
+}
+
+.result {
+  font-size: 36rpx;
+  padding-top: 30rpx;
+}
+
+.result-title {
+  text-align: center;
+  padding-bottom: 20rpx;
+}
+
+.result-text {
+  height: 86rpx;
+  line-height: 86rpx;
+  background-color: #fff;
+  border-bottom: 1rpx solid #ddd;
+  padding: 0 36rpx;
+  font-size: 30rpx;
+}
+
+.result-text .left-text {
+  float: left;
+}
+
+.result-text .right-text {
+  float: right;
+  color: #999;
+}
+.result-btns {
+  margin-top: 40rpx;
+}
+
+.result-btns button {
+  margin-left: 20rpx;
+  margin-top: 20rpx;
+  width: 220rpx;
+  height: 160rpx;
+  float: left;
+  font-size: 30rpx;
+  line-height: 60rpx;
+  padding-top: 15rpx;
+  padding-bottom: 15rpx;
+}
+.memo text{
+  display: block;
+}

@@ -1,0 +1,102 @@
+/* pages/result/index.wxss */
+.title-txt{
+  font-size: 30rpx;
+  text-align: center;
+}
+page {
+  background: #fafafa;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.search {
+  position: relative;
+  background-color: #f1f1f1;
+}
+.search .preTitle{
+  position: absolute;
+  left: 0;
+  top:50;
+  height: 96rpx;
+  font-size: 28rpx;
+  line-height: 96rpx;
+  padding-left: 20rpx;
+}
+.search input {
+  color: black;
+  background-color: white;
+  font-size: 30rpx;
+  font-weight: bold;
+  height: 96rpx;
+  padding-left: 180rpx;
+}
+
+.search text {
+  color: #999;
+  font-size: 28rpx;
+  padding-left: 20rpx;
+  padding-right: 20rpx;
+  line-height: 40px;
+}
+
+.search button {
+  margin-left: 20rpx;
+  margin-right: 20rpx;
+  margin-top: 20rpx;
+}
+
+.memo {
+  color: #999;
+  font-size: 30rpx;
+  line-height: 32px;
+  padding-left: 20rpx;
+  padding-right: 20rpx;
+  padding-top: 20rpx;
+}
+.red{
+  color: red;
+}
+.black{
+  color: black;
+}
+.black text{
+  color: black;
+}
+.bold{
+  font-weight: bold;
+}
+.space{
+  height: 50rpx;
+  clear: both;
+}
+.link{
+  color: blue;
+}
+.insBook{
+  font-size: 50rpx;
+  text-align: center;
+}
+.ligntblue{
+  color: #34AFF0;
+}
+.pretitle{
+  font-size: 34rpx;
+  font-weight: bold;
+}
+.insMemo{
+  margin: 20rpx;
+}
+.morequery{
+  text-align: center;
+  height:150rpx;
+
+}
+.backbtn{
+  position: absolute;
+  right: 30rpx;
+  top: 70rpx;
+  font-size: 25rpx;
+  padding: 0rpx 20rpx;
+}
+
