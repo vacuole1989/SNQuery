@@ -1,140 +1,59 @@
-<view class="container" wx:if="{{show=='home'}}">
-  <view class="big-text">iPhone X</view>
-  <view class="small-text">hello,未来</view>
-  <view class="loge-view">
-    <image class="logo" src="../logo.gif"></image>
-  </view>
-  <view class="search-title">
-    <text>请输入您的序列号/IMEI码</text>
-    <button class="shareBtn" open-type="share">
-      <span class="iconfont icon-zhuanfa"></span>
-      <span class="qzf">去转发</span>
-    </button>
-  </view>
-  <view class="search">
-    <input placeholder="设置 > 通用 > 关于本机" bindinput="inputSN" />
-    <button type="primary" bindtap="searchTag">查询</button>
-  </view>
-  <view class="memo" wx:if="{{!hasResult}}">
-    序列号/IMEI码查询：可查询您iPhone首次激活日期、保修、延保、是否官换机、是否官翻机（官方翻新机）,未激活机器请先激活后查询。同时可查询激活锁状态以及ID黑白名单。
-  </view>
-  <view class="memo" wx:if="{{!hasResult}}">
-    <span class="red">小提示</span>：如果查出来的序列号/IMEI码与本机显示的序列号/IMEI码不一致，
-    <span class="blue">99%</span>是翻新机、妖机、黑机。
-  </view>
-  <view class="memo" wx:if="{{!hasResult}}">
-    全新机维修状态一定要显示“
-    <span class="red">无</span>”，否则
-    <span class="red">非全新机</span>。
-  </view>
-  <view class="result" wx:if="{{hasResult}}">
-    <view class="result-title">查询结果</view>
-    <view class="result-text" wx:if="{{isImei}}">
-      <text class="left-text">IMEI</text>
-      <text class="right-text">{{resData.imei}}</text>
+<view class="container">
+    <view class="big-text">iPhone X</view>
+    <view class="small-text">hello,未来</view>
+    <view class="loge-view">
+        <image class="logo" src="../logo.gif"></image>
     </view>
-    <view class="result-text" wx:if="{{!isImei}}">
-      <text class="left-text">序列号</text>
-      <text class="right-text">{{resData.sn}}</text>
+    <view class="search-title">
+        <text>请输入您的序列号/IMEI码</text>
+        <button class="shareBtn" open-type="share">
+            <span class="iconfont icon-zhuanfa"></span>
+            <span class="qzf">去转发</span>
+        </button>
     </view>
-    <view class="result-text">
-      <text class="left-text">型号</text>
-      <text class="right-text">{{resData.model}}</text>
+    <view class="search">
+        <input placeholder="设置 > 通用 > 关于本机" bindinput="inputSN" />
+        <button type="primary" bindtap="searchTag">查询</button>
     </view>
-    <view class="result-text" wx:if="{{!isImei}}">
-      <text class="left-text">容量</text>
-      <text class="right-text">{{resData.capacity}}</text>
+    <view class="memo" wx:if="{{!hasResult}}">
+        序列号/IMEI码查询：可查询您iPhone首次激活日期、保修、延保、是否官换机、是否官翻机（官方翻新机）,未激活机器请先激活后查询。同时可查询激活锁状态以及ID黑白名单。
     </view>
-    <view class="result-text" wx:if="{{!isImei}}">
-      <text class="left-text">颜色</text>
-      <text class="right-text">{{resData.color}}</text>
+    <view class="memo" wx:if="{{!hasResult}}">
+        <span class="red">小提示</span>：如果查出来的序列号/IMEI码与本机显示的序列号/IMEI码不一致，
+        <span class="blue">99%</span>是翻新机、妖机、黑机。
     </view>
-    <view class="result-btns">
+    <view class="memo" wx:if="{{!hasResult}}">
+        全新机维修状态一定要显示“
+        <span class="red">无</span>”，否则
+        <span class="red">非全新机</span>。
+    </view>
+    <view class="result" wx:if="{{hasResult}}">
+        <view class="result-title">查询结果</view>
+        <view class="result-text" wx:if="{{isImei}}">
+            <text class="left-text">IMEI</text>
+            <text class="right-text">{{resData.imei}}</text>
+        </view>
+        <view class="result-text" wx:if="{{!isImei}}">
+            <text class="left-text">序列号</text>
+            <text class="right-text">{{resData.sn}}</text>
+        </view>
+        <view class="result-text">
+            <text class="left-text">型号</text>
+            <text class="right-text">{{resData.model}}</text>
+        </view>
+        <view class="result-text" wx:if="{{!isImei}}">
+            <text class="left-text">容量</text>
+            <text class="right-text">{{resData.capacity}}</text>
+        </view>
+        <view class="result-text" wx:if="{{!isImei}}">
+            <text class="left-text">颜色</text>
+            <text class="right-text">{{resData.color}}</text>
+        </view>
+        <view class="result-btns">
 
-      <button wx:for="{{btns}}" wx:for-item="item" type="primary" bindtap="btnTag" data-itype="{{item.type}}" data-title="{{item.showTitle}}">{{item.name}}</button>
+            <button wx:for="{{btns}}" wx:for-item="item" type="primary" bindtap="btnTag" data-itype="{{item.type}}" data-title="{{item.showTitle}}">{{item.name}}
+            </button>
+        </view>
+        <view class="space"></view>
     </view>
-    <view class="space"></view>
-  </view>
-</view>
-
-
-<view class="containerjianding" wx:if="{{show=='jianding'}}">
-    <view class="conbox">
-      <view class="inbox">
-        <view class="topTxt">经鉴定，您的设备为</view>
-        <view>{{sysData.model}}</view>
-      </view>
-    </view>
-
-  <view class="result">
-    
-    <view class="result-text" >
-      <text class="left-text">手机型号</text>
-      <text class="right-text">{{sysData.model}}</text>
-    </view>
-    <view class="result-text" >
-      <text class="left-text">手机品牌</text>
-      <text class="right-text">{{sysData.brand}}</text>
-    </view>
-    <view class="result-text">
-      <text class="left-text">系统版本</text>
-      <text class="right-text">{{sysData.system}}</text>
-    </view>
-    <view class="result-text">
-      <text class="left-text">屏幕像素</text>
-      <text class="right-text">{{sysData.screenWidth}} X {{sysData.screenHeight}}</text>
-    </view>
-    <view class="result-text" >
-      <text class="left-text">微信版本</text>
-      <text class="right-text">{{sysData.version}}</text>
-    </view>
-    <view class="result-text">
-      <text class="left-text">微信语言</text>
-      <text class="right-text">{{sysData.language}}</text>
-    </view>
-    <button type="primary" open-type="share" class="sharebtn">分享到群里，看看大家在用什么手机</button>
-    <view class="space"></view>
-  </view>
-</view>
-
-
-<view class="containerhistory" wx:if="{{show=='history'}}">
-  <view class="result">
-    <view class="result-text-h" >
-      <view class="left-text-h">序列号：EJHRKJFFDSFGKDSJF</view>
-      <view class="left-text-h">查询结果：{{sysData.model}}</view>
-      <view class="left-text-h">查询时间：2018-04-06 11:30:00</view>
-    </view>
-    <view class="space"></view>
-  </view>
-</view>
-
-
-
-
-
-<view class="weui-tab">
-  <view class="weui-tab__panel">
-  </view>
-  <view class="weui-tabbar">
-    <view bindtap="setHome" class="weui-tabbar__item">
-      <view style="display: inline-block;position: relative;">
-        <image src="../home.png" alt="" class="weui-tabbar__icon" wx:if="{{show=='home'}}"></image>
-        <image src="../home_gray.png" alt="" class="weui-tabbar__icon" wx:if="{{show!='home'}}"></image>
-      </view>
-      <view class="weui-tabbar__label">首页</view>
-    </view>
-    <view bindtap="setJianding" class="weui-tabbar__item">
-      <image src="../jianding.png" alt="" class="weui-tabbar__icon" wx:if="{{show=='jianding'}}"></image>
-      <image src="../jianding_gray.png" alt="" class="weui-tabbar__icon" wx:if="{{show!='jianding'}}"></image>
-      <view class="weui-tabbar__label">真伪鉴定</view>
-    </view>
-    <view bindtap="setHistory" class="weui-tabbar__item">
-      <view style="display: inline-block;position: relative;">
-        <image src="../history.png" alt="" class="weui-tabbar__icon"  wx:if="{{show=='history'}}"></image>
-        <image src="../history_gray.png" alt="" class="weui-tabbar__icon" wx:if="{{show!='history'}}"></image>
-      </view>
-      <view class="weui-tabbar__label">查询记录</view>
-    </view>
-  </view>
 </view>

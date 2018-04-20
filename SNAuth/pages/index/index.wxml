@@ -92,14 +92,17 @@
       <text class="left-text">微信语言</text>
       <text class="right-text">{{sysData.language}}</text>
     </view>
-    <button type="primary" open-type="share" class="sharebtn">分享到群里，看看大家在用什么手机</button>
+    <button type="primary" open-type="share" class="sharebtn">分享到群里，偷看大家在用什么手机</button>
     <view class="space"></view>
+    <view>注：</view>
+    <view>此功能用于鉴别手机是否为山寨iPhone（安卓改装成的iPhone）</view>
+    <view>此工具可以鉴别安卓手机具体型号</view>
   </view>
 </view>
 
 
 <view class="containerhistory" wx:if="{{show=='history'}}">
-  <web-view src="https://mp.weixin.qq.com/"></web-view>
+  <web-view src="https://applebaoxiu.wang/SNQueryServer/"></web-view>
 </view>
 
 
@@ -123,12 +126,19 @@
       </view>
       <view class="weui-tabbar__label">查询</view>
     </view>
-    <view bindtap="setHistory" class="weui-tabbar__item">
+     <view bindtap="setPhone" class="weui-tabbar__item">
       <view style="display: inline-block;position: relative;">
-        <image src="../history.png" alt="" class="weui-tabbar__icon"  wx:if="{{show=='history'}}"></image>
-        <image src="../history_gray.png" alt="" class="weui-tabbar__icon" wx:if="{{show!='history'}}"></image>
+        <image src="../phone.png" alt="" class="weui-tabbar__icon"  wx:if="{{show=='phone'}}"></image>
+        <image src="../phone_gray.png" alt="" class="weui-tabbar__icon" wx:if="{{show!='phone'}}"></image>
       </view>
-      <view class="weui-tabbar__label">快报</view>
-    </view>
+      <view class="weui-tabbar__label">手机号测吉凶</view>
+    </view> 
+     <view bindtap="setCar" class="weui-tabbar__item">
+      <view style="display: inline-block;position: relative;">
+        <image src="../car.png" alt="" class="weui-tabbar__icon"  wx:if="{{show=='car'}}"></image>
+        <image src="../car_gray.png" alt="" class="weui-tabbar__icon" wx:if="{{show!='car'}}"></image>
+      </view>
+      <view class="weui-tabbar__label">车牌号测吉凶</view>
+    </view> 
   </view>
 </view>

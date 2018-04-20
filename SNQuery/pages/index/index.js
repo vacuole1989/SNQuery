@@ -37,6 +37,11 @@ Page({
       show: 'history'
     })
   },
+  setPhone: function () {
+    this.setData({
+      show: 'phone'
+    })
+  },
   removeAllSpace: function (str) {
     return str.replace(/\s+/g, "");
   },

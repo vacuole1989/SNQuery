@@ -1,5 +1,5 @@
 @import "../stylesheet.wxss";
-@import "../weui.wxss";
+/* @import "../weui.wxss"; */
 
 page {
   background: #fafafa;
@@ -174,4 +174,8 @@ page {
 }
 .sharebtn{
   margin: 20rpx 20rpx;
+}
+.weui-tabbar__label{
+  height: 50rpx;
+  font-size: 30rpx;
 }

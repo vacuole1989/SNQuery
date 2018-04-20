@@ -35,6 +35,16 @@ Page({
       show: 'history'
     })
   },
+  setPhone: function () {
+    this.setData({
+      show: 'phone'
+    })
+  },
+  setCar: function () {
+    this.setData({
+      show: 'car'
+    })
+  },
   removeAllSpace: function (str) {
     return str.replace(/\s+/g, "");
   },
@@ -107,9 +117,6 @@ Page({
     this.data.snNumber = e.detail.value;
   },
   onShareAppMessage: function (res) {
-    if (res.from === 'button') {
-
-    } else {
       return {
         title: '序列号查询',
         path: '/pages/index/index',
@@ -119,8 +126,6 @@ Page({
         fail: function (res) {
         }
       }
-    }
-
   },
   onLoad: function () {
     var _this = this;
