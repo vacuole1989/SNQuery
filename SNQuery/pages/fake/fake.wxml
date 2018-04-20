@@ -1,0 +1,38 @@
+<view class="containerjianding">
+    <view class="conbox">
+        <view class="inbox">
+            <view class="topTxt">经鉴定，您的设备为</view>
+            <view>{{sysData.model}}</view>
+        </view>
+    </view>
+
+    <view class="result">
+
+        <view class="result-text">
+            <text class="left-text">手机型号</text>
+            <text class="right-text">{{sysData.model}}</text>
+        </view>
+        <view class="result-text">
+            <text class="left-text">手机品牌</text>
+            <text class="right-text">{{sysData.brand}}</text>
+        </view>
+        <view class="result-text">
+            <text class="left-text">系统版本</text>
+            <text class="right-text">{{sysData.system}}</text>
+        </view>
+        <view class="result-text">
+            <text class="left-text">屏幕像素</text>
+            <text class="right-text">{{sysData.screenWidth}} X {{sysData.screenHeight}}</text>
+        </view>
+        <view class="result-text">
+            <text class="left-text">微信版本</text>
+            <text class="right-text">{{sysData.version}}</text>
+        </view>
+        <view class="result-text">
+            <text class="left-text">微信语言</text>
+            <text class="right-text">{{sysData.language}}</text>
+        </view>
+        <button type="primary" open-type="share" class="sharebtn">分享到群里，偷看大家在用什么手机</button>
+        <view class="space"></view>
+    </view>
+</view>

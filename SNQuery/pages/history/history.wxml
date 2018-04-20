@@ -1,0 +1,10 @@
+<view class="containerhistory">
+    <view class="result">
+        <view class="result-text-h">
+            <view class="left-text-h">序列号：EJHRKJFFDSFGKDSJF</view>
+            <view class="left-text-h">查询结果：{{sysData.model}}</view>
+            <view class="left-text-h">查询时间：2018-04-06 11:30:00</view>
+        </view>
+        <view class="space"></view>
+    </view>
+</view>
