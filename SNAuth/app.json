@@ -1,14 +1,49 @@
 {
-  "pages": [
-    "pages/index/index",
-    "pages/search/index",
-    "pages/result/index"
-  ],
-  "window": {
-    "backgroundColor": "#F1F1F1",
-    "backgroundTextStyle": "light",
-    "navigationBarBackgroundColor": "#FFFFFF",
-    "navigationBarTitleText": "序列号查询",
-    "navigationBarTextStyle": "black"
-  }
+    "pages": [
+        "pages/fake/fake",
+        "pages/index/index",
+        "pages/phone/phone",
+        "pages/search/index",
+        "pages/result/index",
+        "pages/car/car"
+    ],
+    "window": {
+        "backgroundColor": "#F1F1F1",
+        "backgroundTextStyle": "light",
+        "navigationBarBackgroundColor": "#FFFFFF",
+        "navigationBarTitleText": "序列号查询",
+        "navigationBarTextStyle": "black"
+    },
+    "tabBar": {
+        "color": "#626567",
+        "selectedColor": "#2A8CE5",
+        "backgroundColor": "#FBFBFB",
+        "borderStyle": "white",
+        "list": [
+            {
+                "pagePath": "pages/fake/fake",
+                "text": "手机真伪鉴定",
+                "iconPath": "pages/jianding_gray.png",
+                "selectedIconPath": "pages/jianding.png"
+            },
+            {
+                "pagePath": "pages/index/index",
+                "text": "序列号查询",
+                "iconPath": "pages/search_gray.png",
+                "selectedIconPath": "pages/search.png"
+            },
+            {
+                "pagePath": "pages/phone/phone",
+                "text": "手机号测凶吉",
+                "iconPath": "pages/phone_gray.png",
+                "selectedIconPath": "pages/phone.png"
+            },
+            {
+                "pagePath": "pages/car/car",
+                "text": "车牌号测凶吉",
+                "iconPath": "pages/car_gray.png",
+                "selectedIconPath": "pages/car.png"
+            }
+        ]
+    }
 }

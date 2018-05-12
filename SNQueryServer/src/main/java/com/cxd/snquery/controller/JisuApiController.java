@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.UnsupportedEncodingException;
 import java.util.Map;
 
 
@@ -41,8 +42,8 @@ public class JisuApiController {
 
     @RequestMapping("/{appid}/{itype}")
     @ResponseBody
-    public Object apple(@PathVariable(value = "appid") String appid, @PathVariable(value = "itype") String itype, String sn, String query, HttpServletRequest request) {
-
+    public Object apple(@PathVariable(value = "appid") String appid, @PathVariable(value = "itype") String itype, String sn, String query, HttpServletRequest request) throws UnsupportedEncodingException {
+        sn=new String(sn.getBytes("iso8859-1"),"utf8");
         String ss = luckApiGet(itype, query, sn);
 
         if (null == ss) {

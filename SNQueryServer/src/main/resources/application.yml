@@ -3,6 +3,6 @@ spring:
     hibernate:
       ddl-auto: update
   datasource:
-    url: jdbc:mysql://localhost:3306/snquery
+    url: jdbc:mysql://120.78.252.149:3306/snquery
     username: root
     password: '!QAZ2wsx'

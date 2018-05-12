@@ -7,6 +7,8 @@ import com.cxd.snquery.bean.*;
 import com.cxd.snquery.dao.*;
 import com.cxd.snquery.dto.JSONResult;
 import com.cxd.snquery.util.*;
+import com.google.gson.Gson;
+import org.apache.commons.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -21,6 +23,7 @@ import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
+import java.security.InvalidAlgorithmParameterException;
 import java.util.*;
 
 
@@ -64,13 +67,14 @@ public class QueryController {
     private GsxRepository gsxRepository;
     @Autowired
     private InsImgRepository insImgRepository;
+    @Autowired
+    private GroupCompareRepository groupCompareRepository;
     private static final String SESSION_KEY = "https://api.weixin.qq.com/sns/jscode2session";
-
 
 
     @RequestMapping("/{appid}/{itype}")
     @ResponseBody
-    public Object apple(@PathVariable(value = "appid") String appid, @PathVariable(value = "itype") String itype, String sn, String imei, String nonceStr,String code, HttpServletRequest request) {
+    public Object apple(@PathVariable(value = "appid") String appid, @PathVariable(value = "itype") String itype, String sn, String imei, String nonceStr, String code, HttpServletRequest request) {
         ConstantUtil constantUtil = new ConstantUtil(appid, appTagRepository);
 
 
@@ -86,7 +90,7 @@ public class QueryController {
 
         String url = ("mpn".equalsIgnoreCase(itype) || "gsx".equalsIgnoreCase(itype)) ? constantUtil.getApi3023data() : constantUtil.getApi3023();
 
-        ResponseEntity<String> exchange = this.restTemplate.exchange("gsx".equalsIgnoreCase(itype)?"{url}{type}?{stype}={value}&app=details&lang=zh":"{url}{type}?{stype}={value}", HttpMethod.GET, requestEntity, String.class, url, itype, stype, value);
+        ResponseEntity<String> exchange = this.restTemplate.exchange("gsx".equalsIgnoreCase(itype) ? "{url}{type}?{stype}={value}&app=details&lang=zh" : "{url}{type}?{stype}={value}", HttpMethod.GET, requestEntity, String.class, url, itype, stype, value);
         String body = "{}";
         try {
             body = new String(exchange.getBody().getBytes("iso8859-1"), "utf8");
@@ -306,7 +310,7 @@ public class QueryController {
             } else {
                 mpnRepository.save(new MpnQuery().setCode(jsonObject.get("code") + "").setMessage(jsonObject.get("message") + ""));
             }
-        }else if ("gsx".equalsIgnoreCase(itype)) {
+        } else if ("gsx".equalsIgnoreCase(itype)) {
             System.out.println(jsonObject);
             if ("0".equals(jsonObject.get("code") + "")) {
                 gsxRepository.save(new GsxQuery()
@@ -315,13 +319,13 @@ public class QueryController {
                         .setCrtTim(DateUtil.format(new Date()))
                         .setImei(stype.equals("sn") ? "" : value)
                         .setSn(stype.equals("sn") ? value : "")
-                        .setContent(jsonObject.get("data")+"")
+                        .setContent(jsonObject.get("data") + "")
                         .setIpAddr(ip)
                         .setReturnBody(body)
 
                 );
-                String aa=jsonObject.get("data")+"";
-                queryLogs.setModel(aa.substring(aa.indexOf("型号：")+3,aa.indexOf("<br>IMEI")));
+                String aa = jsonObject.get("data") + "";
+                queryLogs.setModel(aa.substring(aa.indexOf("型号：") + 3, aa.indexOf("<br>IMEI")));
             } else {
                 gsxRepository.save(new GsxQuery().setCode(jsonObject.get("code") + "").setMessage(jsonObject.get("message") + ""));
             }
@@ -493,6 +497,41 @@ public class QueryController {
     public void refund(@PathVariable(value = "appid") String appid, String nonceStr) {
         List<QueryPay> queryPayByNonceStr = queryPayRepository.getQueryPayByNonceStr(nonceStr);
         CommonUtil.refund(queryPayByNonceStr, new ConstantUtil(appid, appTagRepository));
+    }
+
+    @RequestMapping("/{appid}//group/groupid")
+    @ResponseBody
+    public Object getGroupId(@PathVariable(value = "appid") String appid, String encryptedData, String iv, String code,String avatarUrl,String phone) {
+        System.out.println(avatarUrl);
+        System.out.println(phone);
+        System.out.println(encryptedData);
+        System.out.println(iv);
+        System.out.println(code);
+        ConstantUtil constantUtil = new ConstantUtil(appid, appTagRepository);
+        Map usermap = restTemplate.getForObject("{sessionkey}?appid={APPID}&secret={SECRET}&js_code={JSCODE}&grant_type=authorization_code", Map.class, SESSION_KEY, constantUtil.getAppId(), constantUtil.getAppSecret(), code);
+        String session_key = usermap.get("session_key") + "";
+
+
+        Map map = new HashMap();
+        try {
+            Gson gson = new Gson();
+            byte[] resultByte = AES.decrypt(Base64.decodeBase64(encryptedData),
+                    Base64.decodeBase64(session_key),
+                    Base64.decodeBase64(iv));
+            if (null != resultByte && resultByte.length > 0) {
+                String userInfo = new String(resultByte, "UTF-8");
+                groupCompareRepository.save(new GroupCompare().setAppId(appid)
+                .setOpenGId(gson.fromJson(userInfo,Map.class).get("openGId")+"")
+                .setPhone(phone));
+            }
+        } catch (InvalidAlgorithmParameterException e) {
+            e.printStackTrace();
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+
+        return map;
+
     }
 
 

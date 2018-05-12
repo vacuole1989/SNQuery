@@ -102,7 +102,13 @@
     <text class="right-text">{{resData.time}}</text>
   </view>
 </view>
-
+<view class="result" wx:if="{{hasResult&&itype=='gsx'}}">
+        <view class="result-title">查询结果</view>
+        <view class="result-text result-text2" wx:for="{{resData}}" wx:for-item="item">
+            <text style="font-size:30rpx;">{{item}}</text>
+            <text></text>
+        </view>
+    </view>
 
 <view class="result" wx:if="{{hasResult&&itype=='icloud'}}">
   <view class="result-title">查询结果</view>
@@ -199,6 +205,26 @@
   </view>
 </view>
 
+<view class="result" wx:if="{{hasResult&&itype=='mpn'}}">
+        <view class="result-title">查询结果</view>
+        <view class="result-text">
+            <text class="left-text">序列号</text>
+            <text class="right-text">{{resData.sn}}</text>
+        </view>
+        <view class="result-text">
+            <text class="left-text">设备型号</text>
+            <text class="right-text">{{resData.product}}</text>
+        </view>
+        <view class="result-text">
+            <text class="left-text">mpn</text>
+            <text class="right-text">{{resData.mpn}}</text>
+        </view>
+        <view class="result-text">
+            <text class="left-text">国家地区</text>
+            <text class="right-text">{{resData.country.zh}}</text>
+        </view>
+        
+    </view>
 
 <view class="result" wx:if="{{hasResult&&itype=='simlock'}}">
   <view class="result-title">查询结果</view>
