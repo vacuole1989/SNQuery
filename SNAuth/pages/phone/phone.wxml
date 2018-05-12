@@ -1,0 +1,35 @@
+<view class="container">
+    <view class="big-text"></view>
+    <view class="search">
+        <input placeholder="输入手机号" bindinput="inputNbr"/>
+        <button type="primary" bindtap="searchTag">立即测试</button>
+    </view>
+    <view class="memo" wx:if="{{!hasResult}}">
+        手机号码为什么会影响一个人的运势？其实这就像风水、姓名会影响命运的意义是一样的。虽然只是一个号码，但是它与您的生活息息相关，也是您与很多人沟通的桥梁，对我们的心理及运势有一定的暗示和诱导，因此选择手机号码参考数理吉凶较为稳妥。
+    </view>
+
+    <view class="result" wx:if="{{hasResult}}">
+        <view class="result-title score-title">{{resData.luck}}</view>
+        <view class="result-title score-title">得分：{{resData.score}}分</view>
+        <view class="result-text">
+            <text class="left-text">吉凶分析：</text>
+            <text>{{resData.content}}</text>
+        </view>
+        <view class="result-text">
+            <text class="left-text">主人个性：</text>
+            <text>{{resData.character}}</text>
+        </view>
+        <view class="result-text">
+            <text class="left-text">具体表现：</text>
+            <text>{{resData.characterdetail}}</text>
+        </view>
+
+        <view class="space"></view>
+    </view>
+    <view class="red blod" style="margin:30rpx;">邀请更多好友测试!　
+        <button class="shareBtn" open-type="share">
+            <span class="iconfont icon-zhuanfa"></span>
+            <span class="qzf">去转发</span>
+        </button>
+    </view>
+</view>

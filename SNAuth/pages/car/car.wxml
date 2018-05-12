@@ -1,0 +1,35 @@
+<view class="container">
+    <view class="big-text"></view>
+    <view class="search">
+        <input placeholder="输入车牌号" bindinput="carNbr"/>
+        <button type="primary" bindtap="searchTag">立即测试</button>
+    </view>
+    <view class="memo" wx:if="{{!hasResult}}">
+        想知道车牌号码数理吉凶及评分吗？想知道车牌号码与您的八字相合吗？想知道您用什么车牌号码最有利吗？想知道您买什么颜色的车最好吗？想知道流年是否有意外灾祸以提前防范吗？赶紧进入车牌号码测吉凶测试吧。
+    </view>
+
+    <view class="result" wx:if="{{hasResult}}">
+        <view class="result-title score-title">{{resData.luck}}</view>
+        <view class="result-title score-title">得分：{{resData.score}}分</view>
+        <view class="result-text">
+            <text class="left-text">吉凶分析：</text>
+            <text>{{resData.content}}</text>
+        </view>
+        <view class="result-text">
+            <text class="left-text">主人个性：</text>
+            <text>{{resData.character}}</text>
+        </view>
+        <view class="result-text">
+            <text class="left-text">具体表现：</text>
+            <text>{{resData.characterdetail}}</text>
+        </view>
+
+        <view class="space"></view>
+    </view>
+    <view class="red blod" style="margin:30rpx;">邀请更多好友测试!　
+        <button class="shareBtn" open-type="share">
+            <span class="iconfont icon-zhuanfa"></span>
+            <span class="qzf">去转发</span>
+        </button>
+    </view>
+</view>
