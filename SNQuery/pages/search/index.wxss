@@ -17,6 +17,15 @@ page {
   float: right;
 }
 
+.result-text2 {
+    height: unset;
+    line-height: unset;
+    background-color: #fff;
+    border-bottom: 1rpx solid #ddd;
+    padding: 20rpx 36rpx;
+    font-size: 30rpx;
+}
+
 .shareBtn {
   padding: 0rpx;
   font-size: 30rpx;

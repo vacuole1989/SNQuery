@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
-public class QueryLogs implements Serializable {
+public class MpnQuery implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -15,26 +15,29 @@ public class QueryLogs implements Serializable {
     private String imei;
 
     private String url;
+
+    private String product;
+    private String type;
+    private String mpn;
+    private String country;
+
     @Column(length = 4000)
     private String returnBody;
 
     private String ipAddr;
 
     private String crtTim;
+
+    private String code;
+
     private String message;
     private String nonceStr;
-    private String itype;
-    private boolean isn;
-    private String appId;
-    private String openId;
-    private String model;
-
 
     public long getSeqId() {
         return seqId;
     }
 
-    public QueryLogs setSeqId(long seqId) {
+    public MpnQuery setSeqId(long seqId) {
         this.seqId = seqId;
         return this;
     }
@@ -43,7 +46,7 @@ public class QueryLogs implements Serializable {
         return sn;
     }
 
-    public QueryLogs setSn(String sn) {
+    public MpnQuery setSn(String sn) {
         this.sn = sn;
         return this;
     }
@@ -52,7 +55,7 @@ public class QueryLogs implements Serializable {
         return imei;
     }
 
-    public QueryLogs setImei(String imei) {
+    public MpnQuery setImei(String imei) {
         this.imei = imei;
         return this;
     }
@@ -61,16 +64,17 @@ public class QueryLogs implements Serializable {
         return url;
     }
 
-    public QueryLogs setUrl(String url) {
+    public MpnQuery setUrl(String url) {
         this.url = url;
         return this;
     }
+
 
     public String getReturnBody() {
         return returnBody;
     }
 
-    public QueryLogs setReturnBody(String returnBody) {
+    public MpnQuery setReturnBody(String returnBody) {
         this.returnBody = returnBody;
         return this;
     }
@@ -79,7 +83,7 @@ public class QueryLogs implements Serializable {
         return ipAddr;
     }
 
-    public QueryLogs setIpAddr(String ipAddr) {
+    public MpnQuery setIpAddr(String ipAddr) {
         this.ipAddr = ipAddr;
         return this;
     }
@@ -88,8 +92,17 @@ public class QueryLogs implements Serializable {
         return crtTim;
     }
 
-    public QueryLogs setCrtTim(String crtTim) {
+    public MpnQuery setCrtTim(String crtTim) {
         this.crtTim = crtTim;
+        return this;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public MpnQuery setCode(String code) {
+        this.code = code;
         return this;
     }
 
@@ -97,7 +110,7 @@ public class QueryLogs implements Serializable {
         return message;
     }
 
-    public QueryLogs setMessage(String message) {
+    public MpnQuery setMessage(String message) {
         this.message = message;
         return this;
     }
@@ -106,53 +119,44 @@ public class QueryLogs implements Serializable {
         return nonceStr;
     }
 
-    public QueryLogs setNonceStr(String nonceStr) {
+    public MpnQuery setNonceStr(String nonceStr) {
         this.nonceStr = nonceStr;
         return this;
     }
 
-    public String getItype() {
-        return itype;
+    public String getProduct() {
+        return product;
     }
 
-    public QueryLogs setItype(String itype) {
-        this.itype = itype;
+    public MpnQuery setProduct(String product) {
+        this.product = product;
         return this;
     }
 
-    public boolean isIsn() {
-        return isn;
+    public String getType() {
+        return type;
     }
 
-    public QueryLogs setIsn(boolean isn) {
-        this.isn = isn;
+    public MpnQuery setType(String type) {
+        this.type = type;
         return this;
     }
 
-    public String getAppId() {
-        return appId;
+    public String getMpn() {
+        return mpn;
     }
 
-    public QueryLogs setAppId(String appId) {
-        this.appId = appId;
+    public MpnQuery setMpn(String mpn) {
+        this.mpn = mpn;
         return this;
     }
 
-    public String getOpenId() {
-        return openId;
+    public String getCountry() {
+        return country;
     }
 
-    public QueryLogs setOpenId(String openId) {
-        this.openId = openId;
-        return this;
-    }
-
-    public String getModel() {
-        return model;
-    }
-
-    public QueryLogs setModel(String model) {
-        this.model = model;
+    public MpnQuery setCountry(String country) {
+        this.country = country;
         return this;
     }
 }

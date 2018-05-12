@@ -32,7 +32,7 @@
             <text class="left-text">微信语言</text>
             <text class="right-text">{{sysData.language}}</text>
         </view>
-        <button type="primary" open-type="share" class="sharebtn">分享到群里，偷看大家在用什么手机</button>
+        <button type="primary" open-type="share" class="sharebtn">赶紧分享到群里，偷看大家在用什么手机</button>
         <view class="space"></view>
     </view>
 </view>

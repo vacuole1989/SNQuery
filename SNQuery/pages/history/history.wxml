@@ -1,10 +1,9 @@
 <view class="containerhistory">
-    <view class="result">
-        <view class="result-text-h">
-            <view class="left-text-h">序列号：EJHRKJFFDSFGKDSJF</view>
-            <view class="left-text-h">查询结果：{{sysData.model}}</view>
-            <view class="left-text-h">查询时间：2018-04-06 11:30:00</view>
+    <view class="result" wx:for="{{hisData}}" wx:for-item="item" bindtap="onShowHis" data-str="{{item.nonceStr}}">
+        <view class="result-text-h result-text2">
+            <view class="left-text-h">序列号：{{(''==item.sn)?item.imei:item.sn}}</view>
+            <view class="left-text-h">查询结果：{{item.model}}</view>
+            <view class="left-text-h">查询时间：{{item.crtTim}}</view>
         </view>
-        <view class="space"></view>
     </view>
 </view>

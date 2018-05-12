@@ -1,5 +1,6 @@
 var appTag = 'wxc3d91607ed8afa1d'; 
 var host = 'https://applebaoxiu.wang/SNQueryServer/app/'+appTag;
+var host2 = 'https://applebaoxiu.wang/SNQueryServer/appapi/'+appTag;
 
 
 var config = {
@@ -15,11 +16,15 @@ var config = {
         cn: `${host}/cn`,
         serial: `${host}/serial`,
         simlock: `${host}/simlock`,
+        mpn: `${host}/mpn`,
+        gsx: `${host}/gsx`,
         instructions: `${host}/instructions`,
         querypay: `${host}/unifiedorder`,
         refundpay: `${host}/refund`,
         queryhistory: `${host}/queryhistory`,
-        initBtns:`${host}/initBtns`
+        queryhistorylist: `${host}/queryhistorylist`,
+        initBtns:`${host}/initBtns`,
+        mobileluck:`${host2}/mobileluck`
     }
 };
 

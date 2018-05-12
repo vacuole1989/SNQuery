@@ -15,6 +15,7 @@ public class ConstantUtil {
     private String key3023;
     private String payDesc;
     private String api3023 = "https://api.3023.com/apple/";
+    private String api3023data = "https://api.3023data.com/apple/";
     private String notifyUrl = "https://applebaoxiu.wang/SNQuery/app/notify";
     private String getSessionKeyUrl = "https://api.weixin.qq.com/sns/jscode2session";
     private String unifiedorderUrl = "https://api.mch.weixin.qq.com/pay/unifiedorder";
@@ -137,6 +138,15 @@ public class ConstantUtil {
 
     public ConstantUtil setPayDesc(String payDesc) {
         this.payDesc = payDesc;
+        return this;
+    }
+
+    public String getApi3023data() {
+        return api3023data;
+    }
+
+    public ConstantUtil setApi3023data(String api3023data) {
+        this.api3023data = api3023data;
         return this;
     }
 }

@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
-public class QueryLogs implements Serializable {
+public class GsxQuery implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -16,25 +16,25 @@ public class QueryLogs implements Serializable {
 
     private String url;
     @Column(length = 4000)
+    private String content;
+
+    @Column(length = 4000)
     private String returnBody;
 
     private String ipAddr;
 
     private String crtTim;
+
+    private String code;
+
     private String message;
     private String nonceStr;
-    private String itype;
-    private boolean isn;
-    private String appId;
-    private String openId;
-    private String model;
-
 
     public long getSeqId() {
         return seqId;
     }
 
-    public QueryLogs setSeqId(long seqId) {
+    public GsxQuery setSeqId(long seqId) {
         this.seqId = seqId;
         return this;
     }
@@ -43,7 +43,7 @@ public class QueryLogs implements Serializable {
         return sn;
     }
 
-    public QueryLogs setSn(String sn) {
+    public GsxQuery setSn(String sn) {
         this.sn = sn;
         return this;
     }
@@ -52,7 +52,7 @@ public class QueryLogs implements Serializable {
         return imei;
     }
 
-    public QueryLogs setImei(String imei) {
+    public GsxQuery setImei(String imei) {
         this.imei = imei;
         return this;
     }
@@ -61,16 +61,17 @@ public class QueryLogs implements Serializable {
         return url;
     }
 
-    public QueryLogs setUrl(String url) {
+    public GsxQuery setUrl(String url) {
         this.url = url;
         return this;
     }
+
 
     public String getReturnBody() {
         return returnBody;
     }
 
-    public QueryLogs setReturnBody(String returnBody) {
+    public GsxQuery setReturnBody(String returnBody) {
         this.returnBody = returnBody;
         return this;
     }
@@ -79,7 +80,7 @@ public class QueryLogs implements Serializable {
         return ipAddr;
     }
 
-    public QueryLogs setIpAddr(String ipAddr) {
+    public GsxQuery setIpAddr(String ipAddr) {
         this.ipAddr = ipAddr;
         return this;
     }
@@ -88,8 +89,17 @@ public class QueryLogs implements Serializable {
         return crtTim;
     }
 
-    public QueryLogs setCrtTim(String crtTim) {
+    public GsxQuery setCrtTim(String crtTim) {
         this.crtTim = crtTim;
+        return this;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public GsxQuery setCode(String code) {
+        this.code = code;
         return this;
     }
 
@@ -97,7 +107,7 @@ public class QueryLogs implements Serializable {
         return message;
     }
 
-    public QueryLogs setMessage(String message) {
+    public GsxQuery setMessage(String message) {
         this.message = message;
         return this;
     }
@@ -106,53 +116,18 @@ public class QueryLogs implements Serializable {
         return nonceStr;
     }
 
-    public QueryLogs setNonceStr(String nonceStr) {
+    public GsxQuery setNonceStr(String nonceStr) {
         this.nonceStr = nonceStr;
         return this;
     }
 
-    public String getItype() {
-        return itype;
+
+    public String getContent() {
+        return content;
     }
 
-    public QueryLogs setItype(String itype) {
-        this.itype = itype;
-        return this;
-    }
-
-    public boolean isIsn() {
-        return isn;
-    }
-
-    public QueryLogs setIsn(boolean isn) {
-        this.isn = isn;
-        return this;
-    }
-
-    public String getAppId() {
-        return appId;
-    }
-
-    public QueryLogs setAppId(String appId) {
-        this.appId = appId;
-        return this;
-    }
-
-    public String getOpenId() {
-        return openId;
-    }
-
-    public QueryLogs setOpenId(String openId) {
-        this.openId = openId;
-        return this;
-    }
-
-    public String getModel() {
-        return model;
-    }
-
-    public QueryLogs setModel(String model) {
-        this.model = model;
+    public GsxQuery setContent(String content) {
+        this.content = content;
         return this;
     }
 }

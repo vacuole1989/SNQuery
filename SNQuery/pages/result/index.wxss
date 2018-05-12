@@ -9,7 +9,14 @@ page {
   flex-direction: column;
   justify-content: flex-start;
 }
-
+.result-text2 {
+    height: unset;
+    line-height: unset;
+    background-color: #fff;
+    border-bottom: 1rpx solid #ddd;
+    padding: 20rpx 36rpx;
+    font-size: 30rpx;
+}
 .search {
   position: relative;
   background-color: #f1f1f1;

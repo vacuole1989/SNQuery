@@ -3,12 +3,9 @@ package com.cxd.snquery.controller;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.cxd.snquery.BizException;
-import com.cxd.rtcroom.bean.*;
-import com.cxd.rtcroom.dao.*;
 import com.cxd.snquery.bean.*;
-import com.cxd.snquery.dto.JSONResult;
-import com.cxd.rtcroom.util.*;
 import com.cxd.snquery.dao.*;
+import com.cxd.snquery.dto.JSONResult;
 import com.cxd.snquery.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
@@ -58,27 +55,38 @@ public class QueryController {
     @Autowired
     private QueryPayLogsRepository queryPayLogsRepository;
     @Autowired
+    private MpnRepository mpnRepository;
+    @Autowired
     private AppTagRepository appTagRepository;
     @Autowired
     private FeeEnumRepository feeEnumRepository;
     @Autowired
+    private GsxRepository gsxRepository;
+    @Autowired
     private InsImgRepository insImgRepository;
+    private static final String SESSION_KEY = "https://api.weixin.qq.com/sns/jscode2session";
+
 
 
     @RequestMapping("/{appid}/{itype}")
     @ResponseBody
-    public Object apple(@PathVariable(value = "appid") String appid, @PathVariable(value = "itype") String itype, String sn, String imei, String nonceStr, HttpServletRequest request) {
+    public Object apple(@PathVariable(value = "appid") String appid, @PathVariable(value = "itype") String itype, String sn, String imei, String nonceStr,String code, HttpServletRequest request) {
         ConstantUtil constantUtil = new ConstantUtil(appid, appTagRepository);
 
+
+        Map map = restTemplate.getForObject("{sessionkey}?appid={APPID}&secret={SECRET}&js_code={JSCODE}&grant_type=authorization_code", Map.class, SESSION_KEY, constantUtil.getAppId(), constantUtil.getAppSecret(), code);
+        Object openid = map.get("openid");
+
+        System.out.println(openid);
         HttpHeaders requestHeaders = new HttpHeaders();
         requestHeaders.add("key", constantUtil.getKey3023());
         HttpEntity requestEntity = new HttpEntity(null, requestHeaders);
         String stype = (null == imei) ? "sn" : "imei";
         String value = (null == imei) ? sn : imei;
 
-        String url = constantUtil.getApi3023();
+        String url = ("mpn".equalsIgnoreCase(itype) || "gsx".equalsIgnoreCase(itype)) ? constantUtil.getApi3023data() : constantUtil.getApi3023();
 
-        ResponseEntity<String> exchange = this.restTemplate.exchange("{url}{type}?{stype}={value}", HttpMethod.GET, requestEntity, String.class, url, itype, stype, value);
+        ResponseEntity<String> exchange = this.restTemplate.exchange("gsx".equalsIgnoreCase(itype)?"{url}{type}?{stype}={value}&app=details&lang=zh":"{url}{type}?{stype}={value}", HttpMethod.GET, requestEntity, String.class, url, itype, stype, value);
         String body = "{}";
         try {
             body = new String(exchange.getBody().getBytes("iso8859-1"), "utf8");
@@ -87,6 +95,7 @@ public class QueryController {
         }
         String ip = IpUtil.getIpAddress(request);
         QueryLogs queryLogs = new QueryLogs();
+        queryLogs.setOpenId(null == openid ? null : openid.toString());
         queryLogs.setCrtTim(DateUtil.format(new Date()));
         queryLogs.setImei(imei);
         queryLogs.setSn(sn);
@@ -97,7 +106,7 @@ public class QueryController {
         queryLogs.setItype(itype);
         queryLogs.setIsn(null == imei);
         queryLogs.setAppId(appid);
-        queryLogsRepository.save(queryLogs);
+
 
         JSONObject jsonObject = JSON.parseObject(body);
         if ("apple".equalsIgnoreCase(itype) || "imei".equalsIgnoreCase(itype)) {
@@ -113,6 +122,7 @@ public class QueryController {
                         .setModel(jsonObject.get("color") + "")
                         .setReturnBody(body)
                         .setSn(stype.equals("sn") ? value : ""));
+                queryLogs.setModel(jsonObject.get("color") + "");
 
             } else {
                 indexDao.save(new IndexQuery().setCode(jsonObject.get("code") + "").setMessage(jsonObject.get("message") + ""));
@@ -128,8 +138,8 @@ public class QueryController {
                         .setIpAddr(ip)
                         .setModel(jsonObject.get("model") + "")
                         .setReturnBody(body)
-
                 );
+                queryLogs.setModel(jsonObject.get("model") + "");
             } else {
                 serialRepository.save(new SerialQuery().setCode(jsonObject.get("code") + "").setMessage(jsonObject.get("message") + ""));
             }
@@ -152,6 +162,7 @@ public class QueryController {
                         .setStorage(jsonObject.get("storage") + "")
                         .setSupport(jsonObject.get("support") + "")
                 );
+                queryLogs.setModel(jsonObject.get("model") + "");
             } else {
                 appraisalRepository.save(new AppraisalQuery().setCode(jsonObject.get("code") + "").setMessage(jsonObject.get("message") + ""));
             }
@@ -170,6 +181,7 @@ public class QueryController {
                         .setReturnBody(body)
                         .setPurchaseCountry(JSON.parseObject(jsonObject.get("purchase") + "").get("country") + "")
                 );
+                queryLogs.setModel(jsonObject.get("model") + "");
             } else {
                 cnRepository.save(new CnQuery().setCode(jsonObject.get("code") + "").setMessage(jsonObject.get("message") + ""));
             }
@@ -189,6 +201,7 @@ public class QueryController {
                         .setTime(jsonObject.get("time") + "")
 
                 );
+                queryLogs.setModel(jsonObject.get("model") + "");
             } else {
                 activationlockRepository.save(new ActivationlockQuery().setCode(jsonObject.get("code") + "").setMessage(jsonObject.get("message") + ""));
             }
@@ -208,6 +221,7 @@ public class QueryController {
                         .setLocked(jsonObject.get("locked") + "")
 
                 );
+                queryLogs.setModel(jsonObject.get("model") + "");
             } else {
                 icloudRepository.save(new IcloudQuery().setCode(jsonObject.get("code") + "").setMessage(jsonObject.get("message") + ""));
             }
@@ -227,6 +241,7 @@ public class QueryController {
                         .setStatus(jsonObject.get("status") + "")
 
                 );
+                queryLogs.setModel(jsonObject.get("model") + "");
             } else {
                 repairRepository.save(new RepairQuery().setCode(jsonObject.get("code") + "").setMessage(jsonObject.get("message") + ""));
             }
@@ -245,6 +260,7 @@ public class QueryController {
                         .setPurchaseCountry(JSON.parseObject(jsonObject.get("purchase") + "").get("country") + "")
                         .setStorage(jsonObject.get("storage") + "")
                 );
+                queryLogs.setModel(jsonObject.get("model") + "");
             } else {
                 soldRepository.save(new SoldQuery().setCode(jsonObject.get("code") + "").setMessage(jsonObject.get("message") + ""));
             }
@@ -264,10 +280,55 @@ public class QueryController {
                         .setSimlock(jsonObject.get("simlock") + "")
 
                 );
+                queryLogs.setModel(jsonObject.get("model") + "");
             } else {
                 simlockRepository.save(new SimlockQuery().setCode(jsonObject.get("code") + "").setMessage(jsonObject.get("message") + ""));
             }
+        } else if ("mpn".equalsIgnoreCase(itype)) {
+            System.out.println(jsonObject);
+            if ("0".equals(jsonObject.get("code") + "")) {
+                jsonObject = JSON.parseObject(jsonObject.get("data") + "");
+                mpnRepository.save(new MpnQuery()
+                        .setCode("0")
+                        .setNonceStr(nonceStr)
+                        .setCrtTim(DateUtil.format(new Date()))
+                        .setImei(stype.equals("sn") ? "" : value)
+                        .setSn(stype.equals("sn") ? value : "")
+                        .setIpAddr(ip)
+                        .setReturnBody(body)
+                        .setProduct(jsonObject.get("product") + "")
+                        .setMpn(jsonObject.get("mpn") + "")
+                        .setType(jsonObject.get("type") + "")
+                        .setCountry(JSON.parseObject(jsonObject.get("country") + "").get("zh") + "")
+
+                );
+                queryLogs.setModel(jsonObject.get("product") + "");
+            } else {
+                mpnRepository.save(new MpnQuery().setCode(jsonObject.get("code") + "").setMessage(jsonObject.get("message") + ""));
+            }
+        }else if ("gsx".equalsIgnoreCase(itype)) {
+            System.out.println(jsonObject);
+            if ("0".equals(jsonObject.get("code") + "")) {
+                gsxRepository.save(new GsxQuery()
+                        .setCode("0")
+                        .setNonceStr(nonceStr)
+                        .setCrtTim(DateUtil.format(new Date()))
+                        .setImei(stype.equals("sn") ? "" : value)
+                        .setSn(stype.equals("sn") ? value : "")
+                        .setContent(jsonObject.get("data")+"")
+                        .setIpAddr(ip)
+                        .setReturnBody(body)
+
+                );
+                String aa=jsonObject.get("data")+"";
+                queryLogs.setModel(aa.substring(aa.indexOf("型号：")+3,aa.indexOf("<br>IMEI")));
+            } else {
+                gsxRepository.save(new GsxQuery().setCode(jsonObject.get("code") + "").setMessage(jsonObject.get("message") + ""));
+            }
         }
+
+        queryLogsRepository.save(queryLogs);
+
         JSONObject checkbody = JSON.parseObject(body);
         if (!"apple".equals(itype) && !"imei".equals(itype)) {
             List<QueryPay> queryPayByNonceStr = queryPayRepository.getQueryPayByNonceStr(nonceStr);
@@ -279,7 +340,7 @@ public class QueryController {
             boolean aaa = ("serial".equalsIgnoreCase(itype) && StringUtils.isEmpty(checkbody.get("code"))) || (!"serial".equalsIgnoreCase(itype) && "0".equals(checkbody.get("code") + "")) || (!"simlock".equalsIgnoreCase(itype) && "302315".equals(checkbody.get("code") + ""));
             if (aaa) {
                 if (queryPayByNonceStr.size() > 0) {
-                    FeeEnum feeEnum1=new FeeEnum(appid, feeEnumRepository);
+                    FeeEnum feeEnum1 = new FeeEnum(appid, feeEnumRepository);
                     QueryPay queryPay = queryPayByNonceStr.get(0);
                     FeeEnum feeByType = feeEnum1.getFeeByType(itype);
                     CommonUtil.sendTemplate(restTemplate, queryPay.getTotalFee(), "序列号查询-" + feeByType.getName(), sn, queryPay.getOpenid(), queryPay.getOutTradeNo(), queryPay.getPrepayId(), nonceStr, constantUtil);
@@ -311,21 +372,37 @@ public class QueryController {
         return null;
     }
 
+    @RequestMapping("/{appid}/queryhistorylist")
+    @ResponseBody
+    public Object queryhistorylist(@PathVariable(value = "appid") String appid, String code) {
+
+        ConstantUtil constantUtil = new ConstantUtil(appid, appTagRepository);
+        Map map = restTemplate.getForObject("{sessionkey}?appid={APPID}&secret={SECRET}&js_code={JSCODE}&grant_type=authorization_code", Map.class, SESSION_KEY, constantUtil.getAppId(), constantUtil.getAppSecret(), code);
+        Object openid = map.get("openid");
+        if (null != openid) {
+            List<QueryLogs> queryLogs = queryLogsRepository.getQueryLogsByOpenIdAndNonceStrNotNullOrderByCrtTimDesc(openid.toString());
+            return new JSONResult(true, "查询成功", queryLogs);
+        }
+
+
+        return null;
+    }
+
     @RequestMapping("/{appid}/initBtns")
     @ResponseBody
     public Object initBtns(@PathVariable(value = "appid") String appid) {
-        FeeEnum feeEnum1=new FeeEnum(appid, feeEnumRepository);
+        FeeEnum feeEnum1 = new FeeEnum(appid, feeEnumRepository);
         AppTag appTag = appTagRepository.findOne(appid);
-        List<FeeEnum> feeEnums=feeEnum1.validateSwitchNotAll(appTag);
+        List<FeeEnum> feeEnums = feeEnum1.validateSwitchNotAll(appTag);
         InsImg one = insImgRepository.findOne(appid);
-        return new JSONResult(true,feeEnums,one);
+        return new JSONResult(true, feeEnums, one);
     }
 
     @RequestMapping("/{appid}/unifiedorder")
     @ResponseBody
     public Object querypay(HttpServletRequest request, @PathVariable(value = "appid") String appid, String itype, String code) {
         ConstantUtil constantUtil = new ConstantUtil(appid, appTagRepository);
-        FeeEnum feeEnum1=new FeeEnum(appid, feeEnumRepository);
+        FeeEnum feeEnum1 = new FeeEnum(appid, feeEnumRepository);
         String totalFee = feeEnum1.getFeeByType(itype).getFee();
         String description = constantUtil.getPayDesc();
         String ip = IpUtil.getIpAddress(request);

@@ -27,6 +27,7 @@ public class FeeEnum implements Serializable {
     private String type;
     private String name;
     private String fee;
+    private int orderNo;
     @Transient
     private boolean iSwitch;
     private String showTitle;
@@ -34,32 +35,14 @@ public class FeeEnum implements Serializable {
     @Transient
     private List<FeeEnum> list = new ArrayList<>();
 
-    private FeeEnum() {
+
+    public FeeEnum() {
     }
 
     public FeeEnum(String appId, FeeEnumRepository feeEnumRepository) {
-        List<FeeEnum> feeEnums = feeEnumRepository.findFeeEnumsByAppId(appId);
+        List<FeeEnum> feeEnums = feeEnumRepository.findFeeEnumsByAppIdOrderByOrderNoAsc(appId);
         if (feeEnums.size() <= 0) {
-            List<FeeEnum> feeEnumList = new ArrayList<>();
-            FeeEnum fee = new FeeEnum().setAppId(appId).setType("appraisal").setName("序列号/IMEI码深度查询").setFee("1");
-            feeEnumList.add(fee.setShowTitle(fee.getName() + " " + fee.getFee() + "元/次"));
-            fee = new FeeEnum().setAppId(appId).setType("cn").setName("鉴别行货正品（国行）").setFee("1");
-            feeEnumList.add(fee.setShowTitle(fee.getName() + " " + fee.getFee() + "元/次"));
-            fee = new FeeEnum().setAppId(appId).setType("activationlock").setName("苹果激活锁查询").setFee("1.5");
-            feeEnumList.add(fee.setShowTitle(fee.getName() + " " + fee.getFee() + "元/次"));
-            fee = new FeeEnum().setAppId(appId).setType("icloud").setName("ID黑白名单查询").setFee("1.8");
-            feeEnumList.add(fee.setShowTitle(fee.getName() + " " + fee.getFee() + "元/次"));
-            fee = new FeeEnum().setAppId(appId).setType("repair").setName("苹果维修记录查询").setFee("1.5");
-            feeEnumList.add(fee.setShowTitle(fee.getName() + " " + fee.getFee() + "元/次"));
-            fee = new FeeEnum().setAppId(appId).setType("sold").setName("国行、GSX销售地查询").setFee("5");
-            feeEnumList.add(fee.setShowTitle(fee.getName() + " " + fee.getFee() + "元/次"));
-            fee = new FeeEnum().setAppId(appId).setType("serial").setName("鉴定翻新机、妖机、黑机查询").setFee("1");
-            feeEnumList.add(fee.setShowTitle(fee.getName() + " " + fee.getFee() + "元/次"));
-            fee = new FeeEnum().setAppId(appId).setType("simlock").setName("运营商SIM卡网络锁查询").setFee("3");
-            feeEnumList.add(fee.setShowTitle(fee.getName() + " " + fee.getFee() + "元/次"));
-            fee = new FeeEnum().setAppId(appId).setType("instructions").setName("查询说明书鉴定指南").setFee("0");
-            feeEnumList.add(fee.setShowTitle("查询说明书鉴定指南"));
-            feeEnumRepository.save(feeEnumList);
+
         } else {
             this.list = feeEnums;
         }
@@ -179,4 +162,12 @@ public class FeeEnum implements Serializable {
     }
 
 
+    public int getOrderNo() {
+        return orderNo;
+    }
+
+    public FeeEnum setOrderNo(int orderNo) {
+        this.orderNo = orderNo;
+        return this;
+    }
 }

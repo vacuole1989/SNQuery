@@ -21,8 +21,6 @@ public class AppTag implements Serializable {
     private String key3023;
     private String payDesc;
 
-
-
     public String getAppId() {
         return appId;
     }

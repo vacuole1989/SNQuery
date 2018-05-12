@@ -6,5 +6,7 @@ import org.springframework.data.repository.CrudRepository;
 import java.util.List;
 
 public interface QueryLogsRepository extends CrudRepository<QueryLogs, Long> {
-List<QueryLogs> getQueryLogsByNonceStr(String nonceStr);
+    List<QueryLogs> getQueryLogsByNonceStr(String nonceStr);
+
+    List<QueryLogs> getQueryLogsByOpenIdAndNonceStrNotNullOrderByCrtTimDesc(String openId);
 }

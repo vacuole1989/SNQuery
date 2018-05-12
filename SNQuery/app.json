@@ -28,13 +28,13 @@
             },
             {
                 "pagePath": "pages/fake/fake",
-                "text": "真伪鉴定",
+                "text": "手机真伪鉴定",
                 "iconPath": "pages/jianding_gray.png",
                 "selectedIconPath": "pages/jianding.png"
             },
             {
                 "pagePath": "pages/history/history",
-                "text": "查询记录",
+                "text": "历史查询记录",
                 "iconPath": "pages/history_gray.png",
                 "selectedIconPath": "pages/history.png"
             },

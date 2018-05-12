@@ -7,6 +7,6 @@ import java.util.List;
 
 public interface FeeEnumRepository extends CrudRepository<FeeEnum, Long> {
 
-    List<FeeEnum> findFeeEnumsByAppId(String appId);
+    List<FeeEnum> findFeeEnumsByAppIdOrderByOrderNoAsc(String appId);
 
 }
