@@ -1,8 +1,9 @@
 package com.cxd.snquery.controller;
 
-import com.cxd.snquery.dao.AppTagRepository;
+import com.cxd.snquery.bean.QueryResult;
+import com.cxd.snquery.dao.QueryLogsRepository;
+import com.cxd.snquery.dao.QueryResultRepository;
 import com.cxd.snquery.dto.JSONResult;
-import com.cxd.snquery.util.ConstantUtil;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
+import java.util.List;
 import java.util.Map;
 
 
@@ -23,6 +25,8 @@ public class JisuApiController {
 
     @Autowired
     private RestTemplate restTemplate;
+    @Autowired
+    private QueryResultRepository queryResultRepository;
 
 
     public static final String APPKEY = "e395df2ecd6b6036";
@@ -43,8 +47,21 @@ public class JisuApiController {
     @RequestMapping("/{appid}/{itype}")
     @ResponseBody
     public Object apple(@PathVariable(value = "appid") String appid, @PathVariable(value = "itype") String itype, String sn, String query, HttpServletRequest request) throws UnsupportedEncodingException {
-        sn=new String(sn.getBytes("iso8859-1"),"utf8");
-        String ss = luckApiGet(itype, query, sn);
+        sn = new String(sn.getBytes("iso8859-1"), "utf8");
+
+        List<QueryResult> bySnAndItypeAndQuery = queryResultRepository.findBySnAndItypeAndQuery(sn, itype, query);
+        String ss;
+        if (bySnAndItypeAndQuery.size() > 0) {
+            ss = bySnAndItypeAndQuery.get(0).getResult();
+        } else {
+            ss = luckApiGet(itype, query, sn);
+            try {
+                queryResultRepository.save(new QueryResult().setItype(itype).setQuery(query).setResult(ss).setSn(sn));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
 
         if (null == ss) {
             return new JSONResult(false, "查询失败");

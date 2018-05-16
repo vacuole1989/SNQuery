@@ -174,8 +174,17 @@ page {
 }
 .sharebtn{
   margin: 20rpx 20rpx;
+  font-size: 30rpx;
 }
 .weui-tabbar__label{
   height: 50rpx;
   font-size: 30rpx;
+}
+
+.userinfo-avatar{
+    border-radius: 50%;
+    width: 60rpx;
+    height: 60rpx;
+    margin-top: 15rpx;
+    position: absolute;
 }

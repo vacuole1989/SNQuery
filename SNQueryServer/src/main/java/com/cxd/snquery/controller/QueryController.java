@@ -15,10 +15,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpServletRequest;
@@ -325,7 +322,16 @@ public class QueryController {
 
                 );
                 String aa = jsonObject.get("data") + "";
-                queryLogs.setModel(aa.substring(aa.indexOf("型号：") + 3, aa.indexOf("<br>IMEI")));
+
+               String[] zz= aa.split("<br>");
+                for (String s : zz) {
+                    if(s.indexOf("型号")>-1){
+                        queryLogs.setModel(s.replace("型号：",""));
+                    }
+                    if(s.indexOf("零件说明")>-1){
+                        queryLogs.setModel(s.replace("零件说明：",""));
+                    }
+                }
             } else {
                 gsxRepository.save(new GsxQuery().setCode(jsonObject.get("code") + "").setMessage(jsonObject.get("message") + ""));
             }
@@ -499,9 +505,15 @@ public class QueryController {
         CommonUtil.refund(queryPayByNonceStr, new ConstantUtil(appid, appTagRepository));
     }
 
-    @RequestMapping("/{appid}//group/groupid")
+    @RequestMapping("/{appid}/group/groupid")
     @ResponseBody
-    public Object getGroupId(@PathVariable(value = "appid") String appid, String encryptedData, String iv, String code,String avatarUrl,String phone) {
+    public Object getGroupId(@PathVariable(value = "appid") String appid, @RequestBody Map map) {
+        String encryptedData = map.get("encryptedData") + "";
+        String iv = map.get("iv") + "";
+        String code = map.get("code") + "";
+        String avatarUrl = map.get("avatarUrl") + "";
+        String phone = map.get("phone") + "";
+        String nickName = map.get("nickName") + "";
         System.out.println(avatarUrl);
         System.out.println(phone);
         System.out.println(encryptedData);
@@ -510,9 +522,10 @@ public class QueryController {
         ConstantUtil constantUtil = new ConstantUtil(appid, appTagRepository);
         Map usermap = restTemplate.getForObject("{sessionkey}?appid={APPID}&secret={SECRET}&js_code={JSCODE}&grant_type=authorization_code", Map.class, SESSION_KEY, constantUtil.getAppId(), constantUtil.getAppSecret(), code);
         String session_key = usermap.get("session_key") + "";
+        String openid = usermap.get("openid") + "";
+        System.out.println(usermap);
 
-
-        Map map = new HashMap();
+        Map rmap = new HashMap();
         try {
             Gson gson = new Gson();
             byte[] resultByte = AES.decrypt(Base64.decodeBase64(encryptedData),
@@ -520,17 +533,37 @@ public class QueryController {
                     Base64.decodeBase64(iv));
             if (null != resultByte && resultByte.length > 0) {
                 String userInfo = new String(resultByte, "UTF-8");
-                groupCompareRepository.save(new GroupCompare().setAppId(appid)
-                .setOpenGId(gson.fromJson(userInfo,Map.class).get("openGId")+"")
-                .setPhone(phone));
+
+                String openGId = gson.fromJson(userInfo, Map.class).get("openGId") + "";
+
+
+                List<GroupCompare> byOpenGIdAndOpenId = groupCompareRepository.findByOpenGIdAndOpenId(openGId, openid);
+                if (byOpenGIdAndOpenId.size() > 0) {
+                    groupCompareRepository.delete(byOpenGIdAndOpenId);
+                }
+
+                groupCompareRepository.save(
+                        new GroupCompare()
+                                .setAppId(appid)
+                                .setOpenGId(openGId)
+                                .setPhone(phone)
+                                .setAvatarUrl(avatarUrl)
+                                .setOpenId(openid)
+                                .setNickName(nickName)
+                                .setCrtTim(DateUtil.format(new Date())));
+
+
+                List<GroupCompare> byOpenGId = groupCompareRepository.findByOpenGId(openGId);
+
+                return new JSONResult(true, "查询成功", byOpenGId);
+
+
             }
-        } catch (InvalidAlgorithmParameterException e) {
-            e.printStackTrace();
-        } catch (UnsupportedEncodingException e) {
+        } catch (InvalidAlgorithmParameterException | UnsupportedEncodingException e) {
             e.printStackTrace();
         }
 
-        return map;
+        return new JSONResult(false, "查询失败");
 
     }
 

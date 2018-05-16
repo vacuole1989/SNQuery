@@ -18,13 +18,15 @@ var config = {
         simlock: `${host}/simlock`,
         mpn: `${host}/mpn`,
         gsx: `${host}/gsx`,
+        GetGroupId: `${host}/group/groupid`,
         instructions: `${host}/instructions`,
         querypay: `${host}/unifiedorder`,
         refundpay: `${host}/refund`,
         queryhistory: `${host}/queryhistory`,
         queryhistorylist: `${host}/queryhistorylist`,
-        initBtns:`${host}/initBtns`,
-        mobileluck:`${host2}/mobileluck`
+        initBtns: `${host}/initBtns`,
+        mobileluck: `${host2}/mobileluck`,
+        lsplateluck: `${host2}/lsplateluck`
     }
 };
 

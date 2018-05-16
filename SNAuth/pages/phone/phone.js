@@ -47,8 +47,6 @@ Page({
                         } else {
                             _this.showAlert('错误', res.data.data.msg);
                         }
-
-
                     } else {
                         _this.showAlert('错误', '查询失败，请稍后重试。');
                     }

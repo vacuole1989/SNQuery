@@ -1,6 +1,6 @@
 package com.cxd.snquery;
 
-import com.cxd.snquery.util.WxMappingJackson2HttpMessageConverter;
+import com.cxd.snquery.util.WxMessageConverter;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.support.SpringBootServletInitializer;
@@ -22,7 +22,7 @@ public class App extends SpringBootServletInitializer {
 	public RestTemplate restTemplate(){
 
 		RestTemplate restTemplate = new RestTemplate();
-		restTemplate.getMessageConverters().add(new WxMappingJackson2HttpMessageConverter());
+		restTemplate.getMessageConverters().add(new WxMessageConverter());
 		return restTemplate;
 	}
 

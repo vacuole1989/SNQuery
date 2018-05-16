@@ -6,8 +6,14 @@
         </view>
     </view>
 
-    <view class="result">
-
+    <view class="result" wx:if="{{show&&showList}}">
+        <view class="result-text" wx:for="{{compList}}" wx:for-item="item">
+            <image class="userinfo-avatar" src="{{item.avatarUrl}}" background-size="cover"></image>
+            <text class="left-text" style="margin-left:80rpx;">{{item.nickName}}</text>
+            <text class="right-text">{{item.phone}}</text>
+        </view>
+    </view>
+    <view class="result" wx:if="{{show&&!showList}}">
         <view class="result-text">
             <text class="left-text">手机型号</text>
             <text class="right-text">{{sysData.model}}</text>
@@ -32,7 +38,8 @@
             <text class="left-text">微信语言</text>
             <text class="right-text">{{sysData.language}}</text>
         </view>
-        <button type="primary" open-type="share" class="sharebtn">赶紧分享到群里，偷看大家在用什么手机</button>
-        <view class="space"></view>
     </view>
+    <button type="primary" open-type="share" class="sharebtn">赶紧分享到群里，偷看大家在用什么手机</button>
+    <button class="sharebtn" wx:if="{{!userAuth&&showAuth}}" open-type="getUserInfo" bindgetuserinfo="bindGetUserInfo" style="margin-bottom:10rpx;">用户授权</button>
+    <view wx:if="{{!userAuth&&showAuth}}" style="font-size:30rpx;margin:30rpx;margin-top:0;color:red;">注：如果出现上面【用户授权】按钮，需要您点击该按钮并且点击【允许】才能查看群内的手机比较结果。</view>
 </view>

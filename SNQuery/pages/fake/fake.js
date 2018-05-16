@@ -4,106 +4,22 @@ const app = getApp()
 
 Page({
     data: {
-        hasResult: false,
-        snNumber: '',
-        resData: {},
-        isImei: false,
-        btns: [],
-        insImg: '',
-        show: 'home',
         sysData: {
             model: ''
-        }
+        },
+        compList: [],
+        showList: false,
+        show: false,
+        userAuth: true,
+        showAuth: false
     },
-    onShow:function(){
+    onShow: function () {
+        wx.showShareMenu({
+            withShareTicket: true
+        })
         wx.setNavigationBarTitle({
             title: '手机真伪鉴定'
         })
-    },
-    btnTag: function (event) {
-        app.globalData.phone.snNumber = this.data.snNumber;
-        app.globalData.phone.title = event.target.dataset.title;
-        app.globalData.phone.itype = event.target.dataset.itype;
-        wx.navigateTo({
-            url: '/pages/search/index'
-        });
-    },
-    setHome: function () {
-        this.setData({
-            show: 'home'
-        })
-    },
-    setJianding: function () {
-        this.setData({
-            show: 'jianding'
-        })
-    },
-    setHistory: function () {
-        this.setData({
-            show: 'history'
-        })
-    },
-    setPhone: function () {
-        this.setData({
-            show: 'phone'
-        })
-    },
-    removeAllSpace: function (str) {
-        return str.replace(/\s+/g, "");
-    },
-    searchTag: function () {
-        var _this = this;
-        this.setData({
-            snNumber: this.removeAllSpace(this.data.snNumber)
-        });
-        var sn = this.data.snNumber;
-        var regIMEI = new RegExp('^[0-9]{15}$');
-        var regSN = new RegExp('^[0-9a-zA-z]{11,12}$');
-        if (null === sn || '' === sn) {
-            this.showAlert('提示', '请输入序列号或IEMI码');
-        } else if (regIMEI.test(sn) || regSN.test(sn)) {
-            var stype = 'apple';
-            var data = {
-                'sn': sn
-            };
-            if (regIMEI.test(sn)) {
-                this.setData({
-                    isImei: true
-                })
-                stype = 'imei';
-                data = {
-                    'imei': sn
-                };
-            } else {
-                this.setData({
-                    isImei: false
-                })
-            }
-
-            wx.showLoading({
-                title: '查询中'
-            });
-            wx.request({
-                url: config.service[stype],
-                data: data,
-                success: function (res) {
-                    console.info(res);
-                    wx.hideLoading();
-                    if (res.data.success) {
-                        if (undefined == res.data.message.code || null == res.data.message.code || 0 == res.data.message.code) {
-                            _this.setData({
-                                resData: ((undefined == res.data.message.data || null == res.data.message.data) ? res.data.message : res.data.message.data),
-                                hasResult: true
-                            });
-                        } else {
-                            _this.showAlert('序列号/IMEI码有误', '您输入的序列号/IEMI码错误，请核对后重试');
-                        }
-                    }
-                }
-            })
-        } else {
-            _this.showAlert('序列号/IMEI码有误', '您输入的序列号/IEMI码错误，请核对后重试');
-        }
     },
     showAlert: function (title, text) {
         wx.showModal({
@@ -116,15 +32,13 @@ Page({
             }
         });
     },
-    inputSN: function (e) {
-        this.data.snNumber = e.detail.value;
-    },
     onShareAppMessage: function (res) {
         return {
-            title: '序列号查询',
-            path: '/pages/index/index',
-            imageUrl: '../share_bg.gif',
+            title: '看看大家都在用什么手机？',
             success: function (res) {
+                wx.showShareMenu({
+                    withShareTicket: true
+                });
             },
             fail: function (res) {
             }
@@ -132,16 +46,81 @@ Page({
     },
     onLoad: function () {
         var _this = this;
-        wx.request({
-            url: config.service.initBtns,
-            data: { 'icheck': true },
-            success: function (res) {
-                console.info(res);
-                if (res.data.success) {
-                    app.globalData.init.btns = res.data.message;
-                    app.globalData.init.insImg = (null != res.data.data ? res.data.data.baseStr : '');
-                    _this.setData({ btns: app.globalData.init.btns });
-                    _this.setData({ insImg: app.globalData.init.insImg });
+        wx.showShareMenu({
+            withShareTicket: true
+        });
+        if (null != app.globalData.ticket) {
+            wx.getSystemInfo({
+                success: function (ress) {
+                    var mm = ress.model;
+                    if (mm.indexOf('<') > -1) {
+                        ress.model = mm.substring(0, mm.indexOf('<'));
+                    }
+                    wx.getUserInfo({
+                        success: function (resu) {
+                            wx.login({
+                                success: resl => {
+                                    app.globalData.code = resl.code;
+                                    wx.getShareInfo({
+                                        shareTicket: app.globalData.ticket,
+                                        success(res) {
+                                            wx.request({
+                                                method: 'POST',
+                                                url: config.service.GetGroupId,
+                                                data: {
+                                                    code: resl.code,
+                                                    encryptedData: res.encryptedData,
+                                                    iv: res.iv,
+                                                    avatarUrl: resu.userInfo.avatarUrl,
+                                                    phone: ress.model,
+                                                    nickName: resu.userInfo.nickName
+                                                },
+                                                header: {
+                                                    'content-type': 'application/json'
+                                                },
+                                                success: function (res) {
+                                                    if (res.data.success) {
+                                                        _this.setData({
+                                                            show: true,
+                                                            showList: true,
+                                                            compList: res.data.data
+                                                        })
+                                                    } else {
+                                                        _this.setData({
+                                                            show: true,
+                                                            showList: false
+                                                        })
+                                                    }
+                                                }
+                                            })
+                                        },
+                                        fail() { },
+                                        complete() { }
+                                    });
+                                }
+                            })
+                        }
+                    });
+                }
+            })
+        } else {
+            _this.setData({
+                show: true
+            })
+        }
+        _this.setData({
+            showAuth: app.globalData.showAuth
+        })
+        wx.getSetting({
+            success(res) {
+                if (res.authSetting['scope.userInfo']) {
+                    _this.setData({
+                        userAuth: true
+                    })
+                } else {
+                    _this.setData({
+                        userAuth: false
+                    })
                 }
             }
         })
@@ -151,6 +130,8 @@ Page({
                 if (mm.indexOf('<') > -1) {
                     res.model = mm.substring(0, mm.indexOf('<'));
                 }
+                res.screenHeight = res.screenHeight * res.pixelRatio;
+                res.screenWidth = res.screenWidth * res.pixelRatio;
                 res.language = locale[res.language];
                 _this.setData({
                     sysData: res

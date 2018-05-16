@@ -236,12 +236,7 @@ Page({
                                         hasResult: true
                                     });
                                 }
-
-
-                                // _this.setData({
-                                //     resData: resultData,
-                                //     hasResult: true
-                                // });
+  
                             } else {
 
                                 _this.showAlert('提示', (res.data.message.message).replace('[2018-01-03]', ''));

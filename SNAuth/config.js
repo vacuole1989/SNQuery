@@ -1,6 +1,6 @@
 var appTag = 'wx8b93a71bc9c9c411'; 
-var host = 'https://wujieshidai.com/SNQueryServer/app/'+appTag;
-var host2 = 'https://wujieshidai.com/SNQueryServer/appapi/'+appTag;
+var host = 'https://applebaoxiu.wang/SNQueryServer/app/'+appTag;
+var host2 = 'https://applebaoxiu.wang/SNQueryServer/appapi/'+appTag;
 
 
 var config = {
