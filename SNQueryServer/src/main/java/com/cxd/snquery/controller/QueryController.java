@@ -567,12 +567,63 @@ public class QueryController {
 
     }
 
+@RequestMapping("/{appid}/group/hasgroupid")
+    @ResponseBody
+    public Object hasGroupId(@PathVariable(value = "appid") String appid, @RequestBody Map map) {
+        String encryptedData = map.get("encryptedData") + "";
+        String iv = map.get("iv") + "";
+        String code = map.get("code") + "";
+        String phone = map.get("phone") + "";
+        ConstantUtil constantUtil = new ConstantUtil(appid, appTagRepository);
+        Map usermap = restTemplate.getForObject("{sessionkey}?appid={APPID}&secret={SECRET}&js_code={JSCODE}&grant_type=authorization_code", Map.class, SESSION_KEY, constantUtil.getAppId(), constantUtil.getAppSecret(), code);
+        String session_key = usermap.get("session_key") + "";
+        String openid = usermap.get("openid") + "";
+
+        try {
+            Gson gson = new Gson();
+            byte[] resultByte = AES.decrypt(Base64.decodeBase64(encryptedData),
+                    Base64.decodeBase64(session_key),
+                    Base64.decodeBase64(iv));
+            if (null != resultByte && resultByte.length > 0) {
+                String userInfo = new String(resultByte, "UTF-8");
+                String openGId = gson.fromJson(userInfo, Map.class).get("openGId") + "";
+                List<GroupCompare> byOpenGIdAndOpenId = groupCompareRepository.findByOpenGIdAndOpenId(openGId, openid);
+                if (byOpenGIdAndOpenId.size() > 0) {
+                    GroupCompare groupCompare = byOpenGIdAndOpenId.get(0);
+                    groupCompare.setPhone(phone);
+                    groupCompare.setCrtTim(DateUtil.format(new Date()));
+                    groupCompareRepository.save(groupCompare);
+                    List<GroupCompare> byOpenGId = groupCompareRepository.findByOpenGId(openGId);
+                    return new JSONResult(true, "查询成功", byOpenGId);
+                }
+            }
+        } catch (InvalidAlgorithmParameterException | UnsupportedEncodingException e) {
+            LOGGER.error(e.getMessage());
+        }
+
+        return new JSONResult(false, "查询失败");
+
+    }
 
     @RequestMapping("/notify")
     @ResponseBody
     public void notify(HttpServletRequest request) {
-
+        try {
+            String s = stream2String(request.getInputStream());
+            LOGGER.info(s);
+        } catch (IOException e) {
+            LOGGER.error(e.getMessage());
+        }
     }
-
+    private String stream2String(ServletInputStream inputStream) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(inputStream, "utf-8"));
+        StringBuffer sb = new StringBuffer("");
+        String temp;
+        while ((temp = br.readLine()) != null) {
+            sb.append(temp);
+        }
+        br.close();
+        return sb.toString();
+    }
 
 }
