@@ -13,20 +13,14 @@ Page({
         insImg: ''
     },
     onShareAppMessage: function (res) {
-        if (res.from === 'button') {
-            // 来自页面内转发按钮
-            console.log(res.target)
-        }
         return {
             title: '序列号查询',
             path: '/pages/index/index',
             imageUrl: '../share_bg.gif',
             success: function (res) {
-                console.log(res)
                 // 转发成功
             },
             fail: function (res) {
-                console.log(res)
                 // 转发失败
             }
         }

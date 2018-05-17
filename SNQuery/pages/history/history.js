@@ -50,7 +50,7 @@ Page({
                     data: { 'code': res.code },
                     success: function (res) {
                         wx.hideLoading();
-                        console.info(res.data.data);
+
                         if (res.data.success) {
                             _this.setData({ hisData: res.data.data });
                         }

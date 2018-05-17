@@ -83,7 +83,7 @@ Page({
                 url: config.service[stype],
                 data: data,
                 success: function (res) {
-                    console.info(res);
+
                     wx.hideLoading();
                     if (res.data.success) {
                         if (undefined == res.data.message.code || null == res.data.message.code || 0 == res.data.message.code) {
@@ -132,9 +132,7 @@ Page({
 
     },
     onTabItemTap:function(item) {
-        console.log(item.index)
-        console.log(item.pagePath)
-        console.log(item.text)
+
     },
     onLoad: function () {
         var _this = this;
@@ -142,7 +140,7 @@ Page({
             url: config.service.initBtns,
             data: { 'icheck': true },
             success: function (res) {
-                console.info(res);
+
                 if (res.data.success) {
                     app.globalData.init.btns = res.data.message;
                     app.globalData.init.insImg = (null != res.data.data ? res.data.data.baseStr : '');

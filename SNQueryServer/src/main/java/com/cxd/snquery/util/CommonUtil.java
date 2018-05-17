@@ -5,6 +5,8 @@ import com.cxd.snquery.bean.QueryPay;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.input.SAXBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.ByteArrayInputStream;
@@ -14,6 +16,8 @@ import java.net.URLEncoder;
 import java.util.*;
 
 public class CommonUtil {
+    private static final Logger LOGGER = LoggerFactory.getLogger(CommonUtil.class);
+
     /**
      * 方法用途: 对所有传入参数按照字段名的 ASCII 码从小到大排序（字典序），并且生成url参数串
      * 实现步骤:
@@ -167,7 +171,7 @@ public class CommonUtil {
 
             HttpUtil.httpsRequestRefund(url, xml, constantUtil.getMchId());
 
-            System.out.println(DateUtil.format(new Date())+" 退款成功。");
+            LOGGER.info(DateUtil.format(new Date()) + " 退款成功。");
 
         }
 
@@ -248,7 +252,7 @@ public class CommonUtil {
 
         String post = HttpUtil.httpsRequest("https://api.weixin.qq.com/cgi-bin/message/wxopen/template/send?access_token=" + access_token, "POST", JSON.toJSONString(params));
 
-        System.out.println(DateUtil.format(new Date())+" 消息模板发送成功。");
+        LOGGER.info(DateUtil.format(new Date()) + " 消息模板发送成功。");
     }
 
 

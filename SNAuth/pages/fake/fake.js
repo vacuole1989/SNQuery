@@ -1,6 +1,5 @@
 var config = require('../../config');
 var locale = require('../../utils/locale.js');
-
 const app = getApp()
 
 Page({
@@ -14,7 +13,7 @@ Page({
         userAuth: true,
         showAuth: false
     },
-    onShow: function (ops) {
+    onShow: function () {
         wx.showShareMenu({
             withShareTicket: true
         })
@@ -38,7 +37,6 @@ Page({
             title: '看看大家都在用什么手机？',
             success: function (res) {
                 wx.showShareMenu({
-                    // 要求小程序返回分享目标信息
                     withShareTicket: true
                 });
             },
@@ -51,8 +49,8 @@ Page({
         //getUserInfo:fail auth deny
         if (e.detail.errMsg == 'getUserInfo:ok') {
             _this.setData({
-                showAuth: false
-            })
+                userAuth: true
+            });
             wx.getSystemInfo({
                 success: function (ress) {
                     var mm = ress.model;

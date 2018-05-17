@@ -9,6 +9,8 @@ import com.cxd.snquery.dto.JSONResult;
 import com.cxd.snquery.util.*;
 import com.google.gson.Gson;
 import org.apache.commons.codec.binary.Base64;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -18,7 +20,11 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
+import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.security.InvalidAlgorithmParameterException;
 import java.util.*;
@@ -28,6 +34,8 @@ import java.util.*;
 @RequestMapping("/app")
 public class QueryController {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(QueryController.class);
+    private static final String SESSION_KEY = "https://api.weixin.qq.com/sns/jscode2session";
     @Autowired
     private RestTemplate restTemplate;
     @Autowired
@@ -66,8 +74,6 @@ public class QueryController {
     private InsImgRepository insImgRepository;
     @Autowired
     private GroupCompareRepository groupCompareRepository;
-    private static final String SESSION_KEY = "https://api.weixin.qq.com/sns/jscode2session";
-
 
     @RequestMapping("/{appid}/{itype}")
     @ResponseBody
@@ -78,7 +84,6 @@ public class QueryController {
         Map map = restTemplate.getForObject("{sessionkey}?appid={APPID}&secret={SECRET}&js_code={JSCODE}&grant_type=authorization_code", Map.class, SESSION_KEY, constantUtil.getAppId(), constantUtil.getAppSecret(), code);
         Object openid = map.get("openid");
 
-        System.out.println(openid);
         HttpHeaders requestHeaders = new HttpHeaders();
         requestHeaders.add("key", constantUtil.getKey3023());
         HttpEntity requestEntity = new HttpEntity(null, requestHeaders);
@@ -92,7 +97,7 @@ public class QueryController {
         try {
             body = new String(exchange.getBody().getBytes("iso8859-1"), "utf8");
         } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
+            LOGGER.error(e.getMessage());
         }
         String ip = IpUtil.getIpAddress(request);
         QueryLogs queryLogs = new QueryLogs();
@@ -286,7 +291,6 @@ public class QueryController {
                 simlockRepository.save(new SimlockQuery().setCode(jsonObject.get("code") + "").setMessage(jsonObject.get("message") + ""));
             }
         } else if ("mpn".equalsIgnoreCase(itype)) {
-            System.out.println(jsonObject);
             if ("0".equals(jsonObject.get("code") + "")) {
                 jsonObject = JSON.parseObject(jsonObject.get("data") + "");
                 mpnRepository.save(new MpnQuery()
@@ -308,7 +312,6 @@ public class QueryController {
                 mpnRepository.save(new MpnQuery().setCode(jsonObject.get("code") + "").setMessage(jsonObject.get("message") + ""));
             }
         } else if ("gsx".equalsIgnoreCase(itype)) {
-            System.out.println(jsonObject);
             if ("0".equals(jsonObject.get("code") + "")) {
                 gsxRepository.save(new GsxQuery()
                         .setCode("0")
@@ -323,13 +326,13 @@ public class QueryController {
                 );
                 String aa = jsonObject.get("data") + "";
 
-               String[] zz= aa.split("<br>");
+                String[] zz = aa.split("<br>");
                 for (String s : zz) {
-                    if(s.indexOf("型号")>-1){
-                        queryLogs.setModel(s.replace("型号：",""));
+                    if (s.indexOf("型号") > -1) {
+                        queryLogs.setModel(s.replace("型号：", ""));
                     }
-                    if(s.indexOf("零件说明")>-1){
-                        queryLogs.setModel(s.replace("零件说明：",""));
+                    if (s.indexOf("零件说明") > -1) {
+                        queryLogs.setModel(s.replace("零件说明：", ""));
                     }
                 }
             } else {
@@ -438,7 +441,7 @@ public class QueryController {
             queryPayLogs.setReturnBody(res);
             queryPayLogsRepository.save(queryPayLogs);
         } catch (Exception e) {
-
+            LOGGER.error(e.getMessage());
         }
 
 
@@ -471,11 +474,12 @@ public class QueryController {
                     .setTotalFee(totalFee);
             queryPayRepository.save(querypay);
         } catch (Exception e) {
+            LOGGER.error(e.getMessage());
             /**
              * 防止数据库插入错误影响查询。
              */
         }
-        System.out.println(DateUtil.format(new Date()) + " 统一下单发送成功。");
+        LOGGER.info(DateUtil.format(new Date()) + " 统一下单发送成功。");
         if (data.get("return_code").equals("SUCCESS") && data.get("result_code").equals("SUCCESS")) {
             Map<String, String> param = new HashMap<>();
             param.put("appId", constantUtil.getAppId());
@@ -514,18 +518,11 @@ public class QueryController {
         String avatarUrl = map.get("avatarUrl") + "";
         String phone = map.get("phone") + "";
         String nickName = map.get("nickName") + "";
-        System.out.println(avatarUrl);
-        System.out.println(phone);
-        System.out.println(encryptedData);
-        System.out.println(iv);
-        System.out.println(code);
         ConstantUtil constantUtil = new ConstantUtil(appid, appTagRepository);
         Map usermap = restTemplate.getForObject("{sessionkey}?appid={APPID}&secret={SECRET}&js_code={JSCODE}&grant_type=authorization_code", Map.class, SESSION_KEY, constantUtil.getAppId(), constantUtil.getAppSecret(), code);
         String session_key = usermap.get("session_key") + "";
         String openid = usermap.get("openid") + "";
-        System.out.println(usermap);
 
-        Map rmap = new HashMap();
         try {
             Gson gson = new Gson();
             byte[] resultByte = AES.decrypt(Base64.decodeBase64(encryptedData),
@@ -533,41 +530,36 @@ public class QueryController {
                     Base64.decodeBase64(iv));
             if (null != resultByte && resultByte.length > 0) {
                 String userInfo = new String(resultByte, "UTF-8");
-
                 String openGId = gson.fromJson(userInfo, Map.class).get("openGId") + "";
-
-
                 List<GroupCompare> byOpenGIdAndOpenId = groupCompareRepository.findByOpenGIdAndOpenId(openGId, openid);
                 if (byOpenGIdAndOpenId.size() > 0) {
-                    groupCompareRepository.delete(byOpenGIdAndOpenId);
+                    GroupCompare groupCompare = byOpenGIdAndOpenId.get(0);
+                    groupCompare.setPhone(phone);
+                    groupCompare.setCrtTim(DateUtil.format(new Date()));
+                    groupCompareRepository.save(groupCompare);
+                } else {
+                    groupCompareRepository.save(
+                            new GroupCompare()
+                                    .setAppId(appid)
+                                    .setOpenGId(openGId)
+                                    .setPhone(phone)
+                                    .setAvatarUrl(avatarUrl)
+                                    .setOpenId(openid)
+                                    .setNickName(nickName)
+                                    .setCrtTim(DateUtil.format(new Date())));
                 }
-
-                groupCompareRepository.save(
-                        new GroupCompare()
-                                .setAppId(appid)
-                                .setOpenGId(openGId)
-                                .setPhone(phone)
-                                .setAvatarUrl(avatarUrl)
-                                .setOpenId(openid)
-                                .setNickName(nickName)
-                                .setCrtTim(DateUtil.format(new Date())));
-
-
                 List<GroupCompare> byOpenGId = groupCompareRepository.findByOpenGId(openGId);
-
                 return new JSONResult(true, "查询成功", byOpenGId);
-
-
             }
         } catch (InvalidAlgorithmParameterException | UnsupportedEncodingException e) {
-            e.printStackTrace();
+            LOGGER.error(e.getMessage());
         }
 
         return new JSONResult(false, "查询失败");
 
     }
 
-@RequestMapping("/{appid}/group/hasgroupid")
+    @RequestMapping("/{appid}/group/hasgroupid")
     @ResponseBody
     public Object hasGroupId(@PathVariable(value = "appid") String appid, @RequestBody Map map) {
         String encryptedData = map.get("encryptedData") + "";
@@ -615,6 +607,7 @@ public class QueryController {
             LOGGER.error(e.getMessage());
         }
     }
+
     private String stream2String(ServletInputStream inputStream) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(inputStream, "utf-8"));
         StringBuffer sb = new StringBuffer("");

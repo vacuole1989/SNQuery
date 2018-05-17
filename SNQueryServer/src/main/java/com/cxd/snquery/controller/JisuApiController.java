@@ -6,6 +6,8 @@ import com.cxd.snquery.dao.QueryResultRepository;
 import com.cxd.snquery.dto.JSONResult;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,7 +24,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/appapi")
 public class JisuApiController {
-
+    private static final Logger LOGGER = LoggerFactory.getLogger(JisuApiController.class);
     @Autowired
     private RestTemplate restTemplate;
     @Autowired
@@ -38,7 +40,7 @@ public class JisuApiController {
         try {
             return restTemplate.getForObject(url, String.class);
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.error(e.getMessage());
         }
         return null;
     }
@@ -58,7 +60,7 @@ public class JisuApiController {
             try {
                 queryResultRepository.save(new QueryResult().setItype(itype).setQuery(query).setResult(ss).setSn(sn));
             } catch (Exception e) {
-                e.printStackTrace();
+                LOGGER.error(e.getMessage());
             }
         }
 

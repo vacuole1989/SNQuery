@@ -36,7 +36,6 @@ Page({
                 url: config.service['lsplateluck'],
                 data: data,
                 success: function (res) {
-                    console.info(res);
                     wx.hideLoading();
                     if (res.data.success) {
                         if(res.data.data.status=='0'){

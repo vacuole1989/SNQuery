@@ -36,7 +36,7 @@ Page({
                 url: config.service['mobileluck'],
                 data: data,
                 success: function (res) {
-                    console.info(res);
+
                     wx.hideLoading();
                     if (res.data.success) {
                         _this.setData({

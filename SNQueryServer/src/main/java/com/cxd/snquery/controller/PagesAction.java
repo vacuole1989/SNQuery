@@ -9,6 +9,8 @@ import com.cxd.snquery.dao.FeeEnumRepository;
 import com.cxd.snquery.dao.InsImgRepository;
 import com.cxd.snquery.dto.JSONResult;
 import com.cxd.snquery.util.MD5Util;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,7 +27,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/page")
 public class PagesAction {
-
+    private static final Logger LOGGER = LoggerFactory.getLogger(PagesAction.class);
     @Autowired
     private AppTagRepository appTagRepository;
     @Autowired

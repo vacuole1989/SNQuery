@@ -2,11 +2,10 @@ var config = require('config')
 App({
     onLaunch: function (ops) {
         wx.login({
-            success: function (res) {
-              
+            success: res => {
+                this.globalData.code = res.code;
             }
-        });
-
+        })
     },
     onShow: function (ops) {
         var _this = this;
