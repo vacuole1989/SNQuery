@@ -133,7 +133,12 @@ Page({
                         compList: res.data.data
                     })
                 } else {
-                    _this.ifUserAuth(code,encryptedData,iv,model);
+                    wx.login({
+                        success(resll){
+                            _this.ifUserAuth(resll.code,encryptedData,iv,model);
+                        }
+                    })
+
                 }
             }
         });

@@ -479,7 +479,7 @@ public class QueryController {
              * 防止数据库插入错误影响查询。
              */
         }
-        LOGGER.info(DateUtil.format(new Date()) + " 统一下单发送成功。");
+       // LOGGER.info(DateUtil.format(new Date()) + " 统一下单发送成功。");
         if (data.get("return_code").equals("SUCCESS") && data.get("result_code").equals("SUCCESS")) {
             Map<String, String> param = new HashMap<>();
             param.put("appId", constantUtil.getAppId());

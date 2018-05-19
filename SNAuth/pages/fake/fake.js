@@ -57,12 +57,12 @@ Page({
                     if (mm.indexOf('<') > -1) {
                         ress.model = mm.substring(0, mm.indexOf('<'));
                     }
-                    _this.initLogin(ress.model,true,e.detail.userInfo.avatarUrl,e.detail.userInfo.nickName)
+                    _this.initLogin(ress.model, true, e.detail.userInfo.avatarUrl, e.detail.userInfo.nickName)
                 }
             })
         }
     },
-    GetGroupIdFnc:function(code,encryptedData,iv,model,avatarUrl,nickName){
+    GetGroupIdFnc: function (code, encryptedData, iv, model, avatarUrl, nickName) {
         var _this = this;
         wx.request({
             method: 'POST',
@@ -91,7 +91,7 @@ Page({
             }
         });
     },
-    ifUserAuth:function(code,encryptedData,iv,model){
+    ifUserAuth: function (code, encryptedData, iv, model) {
         var _this = this;
         wx.getSetting({
             success(resa) {
@@ -101,7 +101,7 @@ Page({
                     });
                     wx.getUserInfo({
                         success(resu) {
-                            _this.GetGroupIdFnc(code,encryptedData,iv,model,resu.userInfo.avatarUrl,resu.userInfo.nickName);
+                            _this.GetGroupIdFnc(code, encryptedData, iv, model, resu.userInfo.avatarUrl, resu.userInfo.nickName);
                         }
                     });
                 } else {
@@ -114,7 +114,7 @@ Page({
             }
         })
     },
-    ifUserAuthBefore:function(code,encryptedData,iv,model){
+    ifUserAuthBefore: function (code, encryptedData, iv, model) {
         var _this = this;
         wx.request({
             method: 'POST',
@@ -133,12 +133,16 @@ Page({
                         compList: res.data.data
                     })
                 } else {
-                    _this.ifUserAuth(code,encryptedData,iv,model);
+                    wx.login({
+                        success(resll) {
+                            _this.ifUserAuth(resll.code, encryptedData, iv, model);
+                        }
+                    })
                 }
             }
         });
     },
-    initLogin:function(model,isPressBtn,avatarUrl,nickName){
+    initLogin: function (model, isPressBtn, avatarUrl, nickName) {
         var _this = this;
         wx.login({
             success(resl) {
@@ -146,10 +150,10 @@ Page({
                 wx.getShareInfo({
                     shareTicket: app.globalData.ticket,
                     success(resi) {
-                        if(isPressBtn){
-                            _this.GetGroupIdFnc(resl.code,resi.encryptedData,resi.iv,model,avatarUrl,nickName);
-                        }else{
-                            _this.ifUserAuthBefore(resl.code,resi.encryptedData,resi.iv,model);
+                        if (isPressBtn) {
+                            _this.GetGroupIdFnc(resl.code, resi.encryptedData, resi.iv, model, avatarUrl, nickName);
+                        } else {
+                            _this.ifUserAuthBefore(resl.code, resi.encryptedData, resi.iv, model);
                         }
                     }
                 })
@@ -179,7 +183,7 @@ Page({
                 });
 
                 if (null != app.globalData.ticket) {
-                    _this.initLogin(ress.model,false,null,null);
+                    _this.initLogin(ress.model, false, null, null);
                 } else {
                     _this.setData({
                         show: true

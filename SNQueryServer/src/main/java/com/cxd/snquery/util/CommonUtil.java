@@ -252,7 +252,7 @@ public class CommonUtil {
 
         String post = HttpUtil.httpsRequest("https://api.weixin.qq.com/cgi-bin/message/wxopen/template/send?access_token=" + access_token, "POST", JSON.toJSONString(params));
 
-        LOGGER.info(DateUtil.format(new Date()) + " 消息模板发送成功。");
+       // LOGGER.info(DateUtil.format(new Date()) + " 消息模板发送成功。");
     }
 
 
