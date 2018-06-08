@@ -125,6 +125,7 @@ Page({
         });
     },
     payMoney: function (retData) {
+        console.info(retData);
         var _this = this;
         wx.requestPayment({
             'timeStamp': retData.timeStamp,
@@ -136,6 +137,7 @@ Page({
                 _this.queryData(retData.nonceStr);
             },
             fail: function (res) {
+                console.info(res);
                 wx.hideLoading();
                 _this.showAlert('提示', '支付失败，请重试。');
             }
